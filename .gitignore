@@ -1,0 +1,9 @@
+*.o
+*.exe
+*.a
+*.lib
+*.dll
+lib/*
+include/boost/*
+include/wx/*
+build/*
