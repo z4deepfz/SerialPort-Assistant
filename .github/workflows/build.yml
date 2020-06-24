@@ -7,15 +7,16 @@ jobs:
         runs-on: ubuntu-latest 
         
         steps:
+        - uses: actions/checkout@v2
         - name: INSTALL dependency
-          run: sudo apt-get install libboost-all-dev wx3.0* libwxgtk3.0-dev 
+          run: sudo apt-get install libboost-all-dev wx3.0* libwxgtk3.0-dev tree
           
         - name: CLONE wxMathPlot
           run: ls && git clone https://github.com/mkarmona/wxMathPlot.git && ls
         - name: MAKE wxMathPlot
-          run: cd wxMathPlot && ls && cmake -G "Unix Makefiles" && make -j2
+          run: cd wxMathPlot && cmake -G "Unix Makefiles" && make -j2
         - name: LIST
-          run: cd $GITHUB_WORKSPACE && ls && git checkout origin/dev
+          run: cd $GITHUB_WORKSPACE && tree && git checkout origin/dev
         - name: MAKE proj
           run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot && make -j2
         
