@@ -1,10 +1,10 @@
 project(SerialPort-Assistant)
 cmake_minimum_required(VERSION 2.4)
 # find library
-find_package(wxWidgets REQUIRED)
-find_package(Boost REQUIRED)
-find_path(wxMathPlot_INCLUDE_DIR mathplot.h REQUIRED)
-find_path(wxMathPlot_LIB_DIR libmathplot.a REQUIRED)
+find_package(wxWidgets)
+find_package(Boost)
+find_path(wxMathPlot_INCLUDE_DIR mathplot.h)
+find_path(wxMathPlot_LIB_DIR libmathplot.a)
 
 # Compile source files
 set(CMAKE_CXX_FLAGS "-static -std=c++11 -Wno-deprecated-declarations") # specified flags
