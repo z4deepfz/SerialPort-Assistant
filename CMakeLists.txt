@@ -7,34 +7,48 @@ find_path(wxMathPlot_INCLUDE_DIR mathplot.h REQUIRED)
 find_path(wxMathPlot_LIB_DIR libmathplot.a REQUIRED)
 
 # Compile source files
-set(CMAKE_CXX_FLAGS "-static -std=c++11 -Wno-deprecated-declarations -mwindows") # specified flags
+set(CMAKE_CXX_FLAGS "-static -std=c++11 -Wno-deprecated-declarations") # specified flags
 
-file(GLOB wxWidgets_LIBS # specified wxWidgets static library 
-    ${wxWidgets_LIB_DIR}/libwx*core.a
+IF(WIN32) # following libraries must be linked on windows
+message(STATUS "Compiling under win32")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows")
+list(APPEND PLATEFORM_LIBS
+	ws2_32
+	comctl32
+)
+file(GLOB wxWidgets_LINK_FLAGS # specified wxWidgets static library 
+    ${wxWidgets_LIB_DIR}/libwxmsw*core.a
 	${wxWidgets_LIB_DIR}/libwxbase*u.a
 	${wxWidgets_LIB_DIR}/libwxzlib.a
 	${wxWidgets_LIB_DIR}/libwxpng.a
 )
 
-IF(WIN32) # following libraries must be linked on windows
-list(APPEND PLATEFORM_LIBS
-    comctl32
-	wsock32
-	odbc32
-	ws2_32
+list(APPEND SRC_LIST include/resource.rc)
+ELSEIF(UNIX)
+message(STATUS "Compiling under unix")
+execute_process (
+    COMMAND bash -c "wx-config --cxxflags | tr '\n' ' ' "
+    OUTPUT_VARIABLE CMAKE_CXX_FLAGS
 )
+execute_process (
+    COMMAND bash -c "wx-config --libs | tr '\n' ' ' "
+    OUTPUT_VARIABLE wxWidgets_LINK_FLAGS
+)
+set(Boost_LIBS boost_system boost_thread)
 ENDIF()
 
 aux_source_directory(src SRC_LIST) # add source files
-include_directories( ${wxMathPlot_INCLUDE_DIR} ${wxWidgets_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS} )
-link_directories( ${wxMathPlot_LIB_DIR} ${wxWidgets_LIB_DIR} )
-add_executable( SerialPort-Assistant ${SRC_LIST} include/resource.rc)
+include_directories(${wxMathPlot_INCLUDE_DIR} ${wxWidgets_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+link_directories(${wxMathPlot_LIB_DIR} ${wxWidgets_LIB_DIR})
 
-target_link_libraries( SerialPort-Assistant 
+add_executable(SerialPort-Assistant ${SRC_LIST})
+
+target_link_libraries(SerialPort-Assistant 
     -Wl,--start-group # if the libraries of wxWidgets don't linked by --start-group, link error occurred
-    ${wxWidgets_LIBS} 
-	${PLATEFORM_LIBS} 
-	mathplot
-	-Wl,--end-group
+    ${PLATEFORM_LIBS} 
+    ${Boost_LIBS}
+    ${wxWidgets_LINK_FLAGS} 
+    mathplot 
+    -Wl,--end-group
 )
 
