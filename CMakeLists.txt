@@ -7,8 +7,10 @@ find_path(wxMathPlot_INCLUDE_DIR mathplot.h)
 find_path(wxMathPlot_LIB_DIR libmathplot.a)
 
 # Compile source files
-set(CMAKE_CXX_FLAGS "-static -std=c++11 -Wno-deprecated-declarations") # specified flags
+set(CMAKE_CXX_FLAGS "-static -s -std=c++11 -O3 -Wno-deprecated-declarations") # specified flags
 
+# Set Variables
+# On Windows
 IF(WIN32) # following libraries must be linked on windows
 message(STATUS "Compiling under win32")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mwindows")
@@ -22,8 +24,8 @@ file(GLOB wxWidgets_LINK_FLAGS # specified wxWidgets static library
 	${wxWidgets_LIB_DIR}/libwxzlib.a
 	${wxWidgets_LIB_DIR}/libwxpng.a
 )
-
 list(APPEND SRC_LIST include/resource.rc)
+# On Linux
 ELSEIF(UNIX)
 message(STATUS "Compiling under unix")
 execute_process (
@@ -37,6 +39,9 @@ execute_process (
 set(Boost_LIBS boost_system boost_thread)
 ENDIF()
 
+
+
+# Begin Compile
 aux_source_directory(src SRC_LIST) # add source files
 include_directories(${wxMathPlot_INCLUDE_DIR} ${wxWidgets_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 link_directories(${wxMathPlot_LIB_DIR} ${wxWidgets_LIB_DIR})
