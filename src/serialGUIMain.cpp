@@ -147,7 +147,7 @@ void serialGUIFrame::bind_boxsizer()
                 tain4_chkbox->Add(send_hex, 1, defStyle, 0);
             tain2_recieve_send_button -> Add(Send_data_now, 1, defStyle, 5);
 
-    sp0_ctrl_text_area -> Add(tain1_text_graph, 3, defStyle, 10);  // 右侧元件容器
+    sp0_ctrl_text_area -> Add(tain1_text_graph, 4, defStyle, 10);  // 右侧元件容器
         tain1_text_graph -> Add(Recieve_txtbox, 1, defStyle, 5);   // 保存接收到的内容
         tain1_text_graph -> Add(sp2_button_graph, 1, defStyle, 0);  // 按钮集合
             sp2_button_graph -> Add(tain3_buttons_leftof_graph, 1, defStyle, 0);

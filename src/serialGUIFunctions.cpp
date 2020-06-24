@@ -11,12 +11,13 @@ char c2Hex(const char c)
 
 std::vector<char> serialGUIFrame::wxstr2hex(const wxString& a)
 {
+    // Get the correct hexadecimal sequence by a simple deterministic finite automaton
     enum hexDFA {
         IDLE,
         HEX1,
         HEX2,
         SYN_ERR
-    };
+    }; // define DFA
     hexDFA dfa = IDLE;
     std::vector<char> cbuf;
     char tmp;
@@ -45,7 +46,10 @@ std::vector<char> serialGUIFrame::wxstr2hex(const wxString& a)
                 break;
             }
             case HEX2: {
-                if(space) cbuf.push_back(tmp);
+                if(space){
+                    cbuf.push_back(tmp);
+                    dfa = IDLE;
+                }
                 else dfa = SYN_ERR;
                 break;
             }
