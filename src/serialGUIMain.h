@@ -7,7 +7,7 @@
 
 #include "serialGUIApp.h"
 #include "Serial_data.h"
-#include <wx/mathplot.h>
+#include <mathplot.h>
 #include <fstream>
 #include <boost/bind/bind.hpp>
 
