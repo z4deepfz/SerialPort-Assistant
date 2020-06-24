@@ -14,8 +14,10 @@ jobs:
           run: git clone https://github.com/mkarmona/wxMathPlot.git
         - name: MAKE wxMathPlot
           run: cd wxMathPlot && cmake -G "Unix Makefiles" && make -j8
+        - name: LIST
+          run: cd .. && ls
         - name: SWITCH branch
-          run: cd ../SerialPort-Assistant && git checkout dev
+          run: cd SerialPort-Assistant && git checkout dev
         - name: MAKE proj
           run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot && make -j8
         
