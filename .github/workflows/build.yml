@@ -18,6 +18,6 @@ jobs:
         - name: LIST
           run: cd $GITHUB_WORKSPACE && tree && git checkout origin/dev
         - name: MAKE proj
-          run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=wxMathPlot && make -j2
+          run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=wxMathPlot -DwxMathPlot_INCLUDE_DIR=wxMathPlot && make -j2
         
         
