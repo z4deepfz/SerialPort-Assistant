@@ -14,13 +14,13 @@ jobs:
         - name: INSTALL wx3.0
           run: sudo apt-get install wx3.0* libwxgtk3.0-dev
         - name: CLONE wxMathPlot and proj
-          run: git clone https://github.com/mkarmona/wxMathPlot.git && git clone https://github.com/z4deepfz/SerialPort-Assistant.git
+          run: git clone https://github.com/mkarmona/wxMathPlot.git
+        - name: CLONE 
+          run:  git clone -b dev https://github.com/z4deepfz/SerialPort-Assistant.git
         - name: MAKE wxMathPlot
           run: ls && cd wxMathPlot && cmake -G "Unix Makefiles" && make -j2 && cd ..
         - name: LIST
           run: cd SerialPort-Assistant && ls
-        - name: SWITCH branch
-          run: git init && git fetch && git checkout origin/dev
         - name: MAKE proj
           run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot && make -j8
         
