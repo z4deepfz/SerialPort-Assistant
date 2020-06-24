@@ -5,13 +5,14 @@ on: [push]
 jobs:
     build:
         runs-on: ubuntu-latest 
+        - uses: actions/checkout@v2
         steps:
         - name: INSTALL boost lib
           run: sudo apt-get install libboost-all-dev
         - name: INSTALL wx3.0
           run: sudo apt-get install wx3.0* libwxgtk3.0-dev
         - name: CLONE wxMathPlot
-          run: git clone https://github.com/mkarmona/wxMathPlot.git
+          run: cd .. && git clone https://github.com/mkarmona/wxMathPlot.git
         - name: MAKE wxMathPlot
           run: cd wxMathPlot && cmake -G "Unix Makefiles" && make -j8
         - name: LIST
