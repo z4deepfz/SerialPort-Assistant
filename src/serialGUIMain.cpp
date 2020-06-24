@@ -183,7 +183,9 @@ void serialGUIFrame::evtOpenPort(wxCommandEvent& event)
 void serialGUIFrame::evtSampling(wxTimerEvent& event)
 {
     IOdata.async_read_some(boost::asio::buffer(buf,1),
-        boost::bind(handle_read, this, boost::placeholders::_1, boost::placeholders::_2)
+        boost::bind(&serialGUIFrame::handle_read, this, boost::placeholders::_1, boost::placeholders::_2)
+        // Warn: if not use `&serialGUIFrame::` here, the compiler will report
+        //  `error: invalid use of non-static member function`
     );
     IO_svr.run();
 }  // 单次读，计时器触发
