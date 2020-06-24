@@ -12,12 +12,12 @@ jobs:
           run: sudo apt-get install libboost-all-dev wx3.0* libwxgtk3.0-dev tree
           
         - name: CLONE wxMathPlot
-          run: ls && git clone https://github.com/mkarmona/wxMathPlot.git && ls
+          run: cd $GITHUB_WORKSPACE/.. && git clone https://github.com/mkarmona/wxMathPlot.git && tree
         - name: MAKE wxMathPlot
-          run: cd wxMathPlot && cmake -G "Unix Makefiles" && make -j2
+          run: cd $GITHUB_WORKSPACE/../wxMathPlot && cmake -G "Unix Makefiles" && make -j2
         - name: LIST
           run: cd $GITHUB_WORKSPACE && tree && git checkout origin/dev
         - name: MAKE proj
-          run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=wxMathPlot -DwxMathPlot_INCLUDE_DIR=wxMathPlot && make -j2
+          run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot -DwxMathPlot_INCLUDE_DIR=../wxMathPlot && make -j2
         
         
