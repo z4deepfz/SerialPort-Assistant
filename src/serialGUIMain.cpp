@@ -37,16 +37,16 @@ wxString wxbuildinfo(wxbuildinfoformat format)
 }
 
 BEGIN_EVENT_TABLE(serialGUIFrame, wxFrame)
-    EVT_CLOSE (OnClose)
-    EVT_BUTTON(idOpenPort, evtOpenPort)
-    EVT_BUTTON(idStartShowOn_Graphic, evtStartSampling)
-    EVT_BUTTON(idStopShowOn_Graphic , evtStopSampling)
-    EVT_BUTTON(idClearGraph,    evtClearGraph)
-    EVT_BUTTON(idClearTextCtrl, evtClearText)
-    EVT_BUTTON(idSendData,      evtSending)
-    EVT_CHECKBOX(idISRecieve,   evtFlagRecieve)
-    EVT_CHECKBOX(idSendHex,     evtSendHex)
-    EVT_TIMER (idTimer,         evtSampling)
+    EVT_CLOSE (serialGUIFrame::OnClose)
+    EVT_BUTTON(idOpenPort, serialGUIFrame::evtOpenPort)
+    EVT_BUTTON(idStartShowOn_Graphic, serialGUIFrame::evtStartSampling)
+    EVT_BUTTON(idStopShowOn_Graphic , serialGUIFrame::evtStopSampling)
+    EVT_BUTTON(idClearGraph,    serialGUIFrame::evtClearGraph)
+    EVT_BUTTON(idClearTextCtrl, serialGUIFrame::evtClearText)
+    EVT_BUTTON(idSendData,      serialGUIFrame::evtSending)
+    EVT_CHECKBOX(idISRecieve,   serialGUIFrame::evtFlagRecieve)
+    EVT_CHECKBOX(idSendHex,     serialGUIFrame::evtSendHex)
+    EVT_TIMER (idTimer,         serialGUIFrame::evtSampling)
 END_EVENT_TABLE()
 
 serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
@@ -198,7 +198,7 @@ void serialGUIFrame::evtSending(wxCommandEvent& event)
         auto cbuf = wxstr2hex(msg);
         if(cbuf.size() > 0){
             IOdata.async_write_some( boost::asio::buffer( cbuf, cbuf.size() ),
-                boost::bind(handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
+                boost::bind(&serialGUIFrame::handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
             );
         }
         else{
@@ -207,7 +207,7 @@ void serialGUIFrame::evtSending(wxCommandEvent& event)
     }
     else{
         IOdata.async_write_some( boost::asio::buffer( msg, msg.size() ),
-            boost::bind(handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
+            boost::bind(&serialGUIFrame::handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
         );
     }
     IO_svr.run();
