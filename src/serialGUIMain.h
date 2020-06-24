@@ -22,6 +22,7 @@ class serialGUIFrame: public wxFrame
             wxBoxSizer* tain1_text_graph;   // 放置接收文本框和图像
                 wxBoxSizer* sp2_button_graph;   // 分割按钮和图像
                     wxBoxSizer* tain3_buttons_leftof_graph; // 放置图像左边的按钮
+                    wxBoxSizer* tain4_chkbox;
             wxBoxSizer* tain1_ctrl;             // 放置串口控制区元件
                 wxBoxSizer* tain2_choice_desc;  // 放置选项区元件的容器，水平
                     wxBoxSizer* tain3_text;   // 顺序放置静态文本
@@ -31,7 +32,7 @@ class serialGUIFrame: public wxFrame
         wxTextCtrl *Recieve_txtbox;         // 存放接收到的数据
         wxTextCtrl *Send_Message;           // 缓存待发送的数据
         wxButton   *Open_serial_port, *Clear_recieve;             // 【打开串口】和【清空接收】
-        wxCheckBox *is_Recieve_data;
+        wxCheckBox *is_Recieve_data, *send_hex;
         wxButton   *Send_data_now;
         wxButton   *Start_display, *Stop_display, *Init_display;  // 图形控件的指令
         wxTimer    *sampling_clk;
@@ -43,6 +44,8 @@ class serialGUIFrame: public wxFrame
         /* 标记位 */
         bool flagRecieve;           // 是否接收串口信号
         bool flagShowOnGrapgic;     // 是否将收到的内容展示在图像上
+        bool isSendHex;
+        void bind_boxsizer();
 
     protected:
         void init_choice_boxes();
@@ -62,8 +65,10 @@ class serialGUIFrame: public wxFrame
         void evtClearText(wxCommandEvent& event);
         void evtSending(wxCommandEvent& event);
         void evtFlagRecieve(wxCommandEvent& event);
+        void evtSendHex(wxCommandEvent& event);
         void update_display_range();
-
+    protected: // Assistant functions
+        std::vector<char> wxstr2hex(const wxString& a);
     private:
         enum
         {
@@ -76,7 +81,8 @@ class serialGUIFrame: public wxFrame
             idClearTextCtrl,
             idSendData,
             idStartShowOn_Graphic,
-            idStopShowOn_Graphic
+            idStopShowOn_Graphic,
+            idSendHex
         };
         const wxString sel_label[5] = {
             wxT("串口"), wxT("波特率"), wxT("数据位"), wxT("校验位"), wxT("停止位")
