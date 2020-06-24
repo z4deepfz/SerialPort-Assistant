@@ -20,11 +20,12 @@ The project is quite **imperfect**, welcome to commit or open issus.
 *Following features are under consideration for next versions*
 
  - [x] CMakeLists.txt
- - [ ] Switch ASCII and HEX mode for sending and recieving
+ - [x] Switch ASCII and HEX mode for sending and recieving
  - [ ] Tool bar (but I think that's useless...)
  - [ ] Multiple Language
  - [ ] English notes
  - [ ] Fix the compile problem under Linux
+ - [ ] CI
 
 ## Compile 
 
