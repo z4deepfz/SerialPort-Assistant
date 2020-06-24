@@ -14,8 +14,6 @@ jobs:
           run: git clone https://github.com/mkarmona/wxMathPlot.git
         - name: MAKE wxMathPlot
           run: cd wxMathPlot && cmake -G "Unix Makefiles" && make -j8
-        - name: CLONE SerialPort-Assistant
-          run: cd .. && git clone https://github.com/z4deepfz/SerialPort-Assistant.git
         - name: SWITCH branch
           run: cd SerialPort-Assistant && git checkout dev
         - name: MAKE proj
