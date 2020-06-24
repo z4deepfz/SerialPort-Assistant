@@ -1,0 +1,24 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest 
+        steps:
+        - name: INSTALL boost lib
+          run: sudo apt-get install libboost-all-dev
+        - name: INSTALL wx3.0
+          run: sudo apt-get install wx3.0* libwxgtk3.0-dev
+        - name: CLONE wxMathPlot
+          run: git clone https://github.com/mkarmona/wxMathPlot.git
+        - name: MAKE wxMathPlot
+          run: cd wxMathPlot && cmake -G "Unix Makefiles" && make -j8
+        - name: CLONE SerialPort-Assistant
+          run: cd .. && git clone https://github.com/z4deepfz/SerialPort-Assistant.git
+        - name: SWITCH branch
+          run: cd SerialPort-Assistant && git checkout dev
+        - name: MAKE proj
+          run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot && make -j8
+        
+        
