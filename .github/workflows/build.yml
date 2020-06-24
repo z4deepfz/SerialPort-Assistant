@@ -15,8 +15,6 @@ jobs:
           run: cd $GITHUB_WORKSPACE/.. && git clone https://github.com/mkarmona/wxMathPlot.git
         - name: MAKE wxMathPlot
           run: cd $GITHUB_WORKSPACE/../wxMathPlot && cmake -G "Unix Makefiles" && make -j2
-        - name: SWITCH branch
-          run: cd $GITHUB_WORKSPACE && git checkout origin/dev
         - name: MAKE proj
           run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot -DwxMathPlot_INCLUDE_DIR=../wxMathPlot && make -j2
         - name: Hurry!
