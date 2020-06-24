@@ -5,20 +5,20 @@ on: [push]
 jobs:
     build:
         runs-on: ubuntu-latest 
-        steps:
-        - name: INSTALL boost lib
-          run: sudo apt-get install libboost-all-dev
-        - name: INSTALL wx3.0
-          run: sudo apt-get install wx3.0* libwxgtk3.0-dev
-        - name: CLONE wxMathPlot
-          run: git clone https://github.com/mkarmona/wxMathPlot.git
-        - name: MAKE wxMathPlot
-          run: cd wxMathPlot && cmake -G "Unix Makefiles" && make -j8
-        - name: CLONE SerialPort-Assistant
-          run: cd .. && git clone https://github.com/z4deepfz/SerialPort-Assistant.git
-        - name: SWITCH branch
-          run: cd SerialPort-Assistant && git checkout dev
-        - name: MAKE proj
-          run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot && make -j8
         
+        steps:
+        - uses: actions/checkout@v2
+        - name: INSTALL dependency
+          run: sudo apt-get install libboost-all-dev wx3.0* libwxgtk3.0-dev tree
+          
+        - name: CLONE wxMathPlot
+          run: cd $GITHUB_WORKSPACE/.. && git clone https://github.com/mkarmona/wxMathPlot.git
+        - name: MAKE wxMathPlot
+          run: cd $GITHUB_WORKSPACE/../wxMathPlot && cmake -G "Unix Makefiles" && make -j2
+        - name: SWITCH branch
+          run: cd $GITHUB_WORKSPACE && git checkout origin/dev
+        - name: MAKE proj
+          run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot -DwxMathPlot_INCLUDE_DIR=../wxMathPlot && make -j2
+        - name: Hurry!
+          run: echo I made it! It took me 4hrs!!!
         
