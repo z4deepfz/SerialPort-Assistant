@@ -3,7 +3,9 @@
 *.a
 *.lib
 *.dll
-lib/*
-include/boost/*
-include/wx/*
 build/*
+
+# only include `.h` and `.cpp` files in `src`
+src/*
+!src/*.cpp
+!src/*.h

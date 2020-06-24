@@ -45,13 +45,15 @@ BEGIN_EVENT_TABLE(serialGUIFrame, wxFrame)
     EVT_BUTTON(idClearTextCtrl, evtClearText)
     EVT_BUTTON(idSendData,      evtSending)
     EVT_CHECKBOX(idISRecieve,   evtFlagRecieve)
+    EVT_CHECKBOX(idSendHex,     evtSendHex)
     EVT_TIMER (idTimer,         evtSampling)
 END_EVENT_TABLE()
 
 serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
     : wxFrame(frame, -1, title, wxDefaultPosition, wxSize(800, 500),
               wxMINIMIZE_BOX | wxSYSTEM_MENU | wxCAPTION | wxCLOSE_BOX),
-      IO_svr(), IOdata(IO_svr)
+      IO_svr(), IOdata(IO_svr),
+      flagRecieve(false), flagShowOnGrapgic(false), isSendHex(false)
 {
     /* wxPanel */
     top_panel = new wxPanel(this);
@@ -66,6 +68,7 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
 
     /* wxCheckBox */
     is_Recieve_data = new wxCheckBox(top_panel, idISRecieve, wxT("接受数据"));
+    send_hex = new wxCheckBox(top_panel, idSendHex, wxT("HEX模式"));
 
     /* wxTimer */
     sampling_clk = new wxTimer(this, idTimer);
@@ -86,6 +89,7 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
     tain1_text_graph    = new wxBoxSizer(wxVERTICAL);
         sp2_button_graph = new wxBoxSizer(wxHORIZONTAL);
             tain3_buttons_leftof_graph = new wxBoxSizer(wxVERTICAL);
+                tain4_chkbox = new wxBoxSizer(wxVERTICAL);
 
     /** Graphic **/
     auto scaX = new mpScaleX(wxT("Cases"), mpALIGN_BORDER_LEFT, false);
@@ -103,36 +107,8 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
     Graph->Fit(0, 16, -10, 1000);
     scaX->SetLabelFormat(wxString("%.0f"));
     scaY->SetLabelFormat(wxString("%0.f"));
-    /* Boost */
-    //IO_svr.run();
 
-    /// 绑定弹性控制器
-    constexpr auto defStyle = wxEXPAND | wxALL;
-    top_panel -> SetSizer(sp0_ctrl_text_area);
-
-    sp0_ctrl_text_area -> Add(tain1_ctrl, 1, defStyle, 10);        // 左侧元件容器
-        tain1_ctrl -> Add(tain2_choice_desc, 1, defStyle, 0);     // 选项元件
-            tain2_choice_desc->Add(tain3_text, 1, defStyle, 0);
-            tain2_choice_desc->Add(tain3_choice, 1, defStyle, 0);
-                for(int i=0; i<5; ++i){
-                    tain3_text->Add(selection[i].first, 1, defStyle, 5);
-                    tain3_choice->Add(selection[i].second, 1, defStyle, 5);
-                }
-        tain1_ctrl -> Add(Open_serial_port, 1, defStyle, 5);          // 打开串口的按钮
-        tain1_ctrl -> Add(Clear_recieve, 1, defStyle, 5);             // 清空右侧文本框的内容
-        tain1_ctrl -> Add(Send_Message, 1, defStyle, 5);
-        tain1_ctrl -> Add(tain2_recieve_send_button, 1, defStyle, 0); // 控制收发的一个勾选框和按钮
-            tain2_recieve_send_button -> Add(is_Recieve_data, 1, defStyle, 5);
-            tain2_recieve_send_button -> Add(Send_data_now, 1, defStyle, 5);
-
-    sp0_ctrl_text_area -> Add(tain1_text_graph, 3, defStyle, 10);  // 右侧元件容器
-        tain1_text_graph -> Add(Recieve_txtbox, 1, defStyle, 5);   // 保存接收到的内容
-        tain1_text_graph -> Add(sp2_button_graph, 1, defStyle, 0);  // 按钮集合
-            sp2_button_graph -> Add(tain3_buttons_leftof_graph, 1, defStyle, 0);
-                tain3_buttons_leftof_graph -> Add(Start_display, 1, defStyle, 5);
-                tain3_buttons_leftof_graph -> Add(Stop_display, 1, defStyle, 5);
-                tain3_buttons_leftof_graph -> Add(Init_display, 1, defStyle, 5);
-            sp2_button_graph -> Add(Graph, 5, defStyle, 5);
+    bind_boxsizer();
 
 }
 
@@ -149,6 +125,39 @@ void serialGUIFrame::init_choice_boxes()
     return;
 }
 
+void serialGUIFrame::bind_boxsizer()
+{
+    constexpr auto defStyle = wxEXPAND | wxALL;
+    top_panel -> SetSizer(sp0_ctrl_text_area);
+
+    sp0_ctrl_text_area -> Add(tain1_ctrl, 1, defStyle, 10);        // 左侧元件容器
+        tain1_ctrl -> Add(tain2_choice_desc, 1, defStyle, 0);     // 选项元件
+            tain2_choice_desc->Add(tain3_text, 1, defStyle, 0);
+            tain2_choice_desc->Add(tain3_choice, 1, defStyle, 0);
+                for(int i=0; i<5; ++i){
+                    tain3_text->Add(selection[i].first, 1, defStyle, 5);
+                    tain3_choice->Add(selection[i].second, 1, defStyle, 5);
+                }
+        tain1_ctrl -> Add(Open_serial_port, 1, defStyle, 5);          // 打开串口的按钮
+        tain1_ctrl -> Add(Clear_recieve, 1, defStyle, 5);             // 清空右侧文本框的内容
+        tain1_ctrl -> Add(Send_Message, 1, defStyle, 5);
+        tain1_ctrl -> Add(tain2_recieve_send_button, 1, defStyle, 0); // 控制收发的一个勾选框和按钮
+            tain2_recieve_send_button -> Add(tain4_chkbox, 1, defStyle, 5);
+                tain4_chkbox->Add(is_Recieve_data, 1, defStyle, 0);
+                tain4_chkbox->Add(send_hex, 1, defStyle, 0);
+            tain2_recieve_send_button -> Add(Send_data_now, 1, defStyle, 5);
+
+    sp0_ctrl_text_area -> Add(tain1_text_graph, 3, defStyle, 10);  // 右侧元件容器
+        tain1_text_graph -> Add(Recieve_txtbox, 1, defStyle, 5);   // 保存接收到的内容
+        tain1_text_graph -> Add(sp2_button_graph, 1, defStyle, 0);  // 按钮集合
+            sp2_button_graph -> Add(tain3_buttons_leftof_graph, 1, defStyle, 0);
+                tain3_buttons_leftof_graph -> Add(Start_display, 1, defStyle, 5);
+                tain3_buttons_leftof_graph -> Add(Stop_display, 1, defStyle, 5);
+                tain3_buttons_leftof_graph -> Add(Init_display, 1, defStyle, 5);
+            sp2_button_graph -> Add(Graph, 5, defStyle, 5);
+}
+
+/** 以下是事件处理函数 **/
 void serialGUIFrame::evtOpenPort(wxCommandEvent& event)
 {
     auto gcid = [&](int id){return selection[id].second->GetSelection();};
@@ -171,11 +180,10 @@ void serialGUIFrame::evtOpenPort(wxCommandEvent& event)
     return;
 }
 
-/** 以下是事件处理函数 **/
 void serialGUIFrame::evtSampling(wxTimerEvent& event)
 {
     IOdata.async_read_some(boost::asio::buffer(buf,1),
-        boost::bind(serialGUIFrame::handle_read, this, boost::placeholders::_1, boost::placeholders::_2)
+        boost::bind(handle_read, this, boost::placeholders::_1, boost::placeholders::_2)
     );
     IO_svr.run();
 }  // 单次读，计时器触发
@@ -183,9 +191,25 @@ void serialGUIFrame::evtSending(wxCommandEvent& event)
 {
     auto msg = Send_Message->GetValue();
     Send_Message->Clear();
-    IOdata.async_write_some( boost::asio::buffer( msg, msg.size() ),
-        boost::bind(serialGUIFrame::handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
-    );
+    if(msg.size() == 0){
+        wxMessageBox(wxT("没有数据"), wxT("提示"));
+    }
+    if(isSendHex){
+        auto cbuf = wxstr2hex(msg);
+        if(cbuf.size() > 0){
+            IOdata.async_write_some( boost::asio::buffer( cbuf, cbuf.size() ),
+                boost::bind(handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
+            );
+        }
+        else{
+            wxMessageBox(wxT("格式错误"), wxT("错误"));
+        }
+    }
+    else{
+        IOdata.async_write_some( boost::asio::buffer( msg, msg.size() ),
+            boost::bind(handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
+        );
+    }
     IO_svr.run();
 }
 void serialGUIFrame::evtFlagRecieve(wxCommandEvent& event)
@@ -199,6 +223,8 @@ void serialGUIFrame::evtFlagRecieve(wxCommandEvent& event)
     }
     return;
 }
+
+void serialGUIFrame::evtSendHex(wxCommandEvent& event) { isSendHex=send_hex->GetValue(); }
 void serialGUIFrame::evtStartSampling(wxCommandEvent& event){ flagShowOnGrapgic = true; }  // 启动采样
 void serialGUIFrame::evtStopSampling(wxCommandEvent& event) { flagShowOnGrapgic = false; } // 停止采样
 void serialGUIFrame::evtClearGraph(wxCommandEvent& event)   { data->Clear(); Graph->UpdateAll(); }// 清空
@@ -209,57 +235,6 @@ void serialGUIFrame::update_display_range()
     int cnt = data->getSize();
     Graph->Fit(std::max(0,cnt-10), cnt, 0, std::max(data->getMaxValue()+100,255.0));
 }
-
-/** 以下是对接boost的ASIO串口库的部分 **/
-
-void serialGUIFrame::asioOpen_serial_port
-    (const char* port, int baud, int dbt, int par, int sbits)
-{
-    using namespace boost::asio;
-    IOdata.open(port);
-    IOdata.set_option(serial_port::baud_rate(baud));
-    IOdata.set_option(serial_port::character_size(dbt));
-    switch(par){
-        case 0: IOdata.set_option(serial_port::parity(serial_port::parity::none)); break;
-        case 1: IOdata.set_option(serial_port::parity(serial_port::parity::odd)); break;
-        case 2: IOdata.set_option(serial_port::parity(serial_port::parity::even)); break;
-        default: throw std::bad_exception();
-    }
-    switch(sbits){
-        case 10: IOdata.set_option(serial_port::stop_bits(serial_port::stop_bits::one)); break;
-        case 15: IOdata.set_option(serial_port::stop_bits(serial_port::stop_bits::onepointfive)); break;
-        case 20: IOdata.set_option(serial_port::stop_bits(serial_port::stop_bits::two)); break;
-        default: throw std::bad_exception();
-    }
-    return;
-}
-
-void serialGUIFrame::asioClose_serial_port()
-{
-    IOdata.close();
-}
-
-constexpr char rehex[17] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-auto oct2hex = [](uint8_t x) { return std::string() + rehex[((x>>4)&0xf)] + rehex[x&0xf] + ' '; };
-
-void serialGUIFrame::handle_read(const boost::system::error_code& e, std::size_t sz)
-{
-    //wxMessageBox(wxT("Callback"));
-    for(std::size_t i=0; i<sz; ++i){
-        if(flagShowOnGrapgic){
-            data->addElement(buf[i]);
-        }
-        Recieve_txtbox->AppendText( oct2hex(buf[i]) );
-    }
-    if(flagShowOnGrapgic){
-        Graph->Update();
-        update_display_range();
-    }
-    return;
-}
-
-void serialGUIFrame::handle_write(const boost::system::error_code &e, std::size_t sz) { }
-
 
 serialGUIFrame::~serialGUIFrame()
 {
