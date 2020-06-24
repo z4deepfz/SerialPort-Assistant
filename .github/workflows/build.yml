@@ -20,7 +20,7 @@ jobs:
         - name: LIST
           run: cd SerialPort-Assistant && ls
         - name: SWITCH branch
-          run: git checkout dev
+          run: git init && git checkout dev
         - name: MAKE proj
           run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot && make -j8
         
