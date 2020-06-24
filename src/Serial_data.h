@@ -1,7 +1,7 @@
 ﻿#ifndef SERIAL_DATA_H
 #define SERIAL_DATA_H
 
-#include <wx/mathplot.h>
+#include <mathplot.h>
 #include <boost/asio.hpp>
 #include <vector>
 #include <algorithm>
