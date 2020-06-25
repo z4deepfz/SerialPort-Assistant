@@ -182,37 +182,47 @@ void serialGUIFrame::evtOpenPort(wxCommandEvent& event)
 
 void serialGUIFrame::evtSampling(wxTimerEvent& event)
 {
-    IOdata.async_read_some(boost::asio::buffer(buf,1),
-        boost::bind(&serialGUIFrame::handle_read, this, boost::placeholders::_1, boost::placeholders::_2)
-        // Warn: if not use `&serialGUIFrame::` here, the compiler will report
-        //  `error: invalid use of non-static member function`
-    );
-    IO_svr.run();
-}  // 单次读，计时器触发
+    if(IOdata.is_open()) { // make sure the port has been opened before receiving
+        IOdata.async_read_some(boost::asio::buffer(buf,1),
+            boost::bind(&serialGUIFrame::handle_read, this, boost::placeholders::_1, boost::placeholders::_2)
+            // Warn: if not use `&serialGUIFrame::` here, the compiler will report
+            //  `error: invalid use of non-static member function`
+        );
+        IO_svr.run();
+    }
+    else{
+        return;
+    }
+}  // triggered by Timer
 void serialGUIFrame::evtSending(wxCommandEvent& event)
 {
-    auto msg = Send_Message->GetValue();
-    Send_Message->Clear();
-    if(msg.size() == 0){
-        wxMessageBox(wxT("没有数据"), wxT("提示"));
-    }
-    if(isSendHex){
-        auto cbuf = wxstr2hex(msg);
-        if(cbuf.size() > 0){
-            IOdata.async_write_some( boost::asio::buffer( cbuf, cbuf.size() ),
+    if(IOdata.is_open()) { // make sure the port has been opened before sending
+        auto msg = Send_Message->GetValue();
+        Send_Message->Clear();
+        if(msg.size() == 0){
+            wxMessageBox(wxT("没有数据"), wxT("提示"));
+        }
+        if(isSendHex){
+            auto cbuf = wxstr2hex(msg);
+            if(cbuf.size() > 0){
+                IOdata.async_write_some( boost::asio::buffer( cbuf, cbuf.size() ),
+                    boost::bind(&serialGUIFrame::handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
+                );
+            }
+            else{
+                wxMessageBox(wxT("格式错误"), wxT("错误"));
+            }
+        }
+        else{
+            IOdata.async_write_some( boost::asio::buffer( msg, msg.size() ),
                 boost::bind(&serialGUIFrame::handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
             );
         }
-        else{
-            wxMessageBox(wxT("格式错误"), wxT("错误"));
-        }
+        IO_svr.run();
     }
     else{
-        IOdata.async_write_some( boost::asio::buffer( msg, msg.size() ),
-            boost::bind(&serialGUIFrame::handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
-        );
+        wxMessageBox(wxT("端口尚未打开"), wxT("提示"), wxICON_ERROR);
     }
-    IO_svr.run();
 }
 void serialGUIFrame::evtFlagRecieve(wxCommandEvent& event)
 {
