@@ -224,6 +224,7 @@ void serialGUIFrame::evtSending(wxCommandEvent& event)
         wxMessageBox(wxT("端口尚未打开"), wxT("提示"), wxICON_ERROR);
     }
 }
+
 void serialGUIFrame::evtFlagRecieve(wxCommandEvent& event)
 {
     flagRecieve = is_Recieve_data->GetValue();

@@ -19,4 +19,3 @@ jobs:
           run: cmake -G "Unix Makefiles" -DwxMathPlot_LIB_DIR=../wxMathPlot -DwxMathPlot_INCLUDE_DIR=../wxMathPlot && make -j2
         - name: Hurry!
           run: echo I made it! It took me 4hrs!!!
-        
