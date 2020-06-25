@@ -1,7 +1,10 @@
 Serial Port Assistant v0.5a
 ====
-Free, open source project for serial communication
-----
+
+![C/C++ CI](https://github.com/z4deepfz/SerialPort-Assistant/workflows/C/C++%20CI/badge.svg)
+![licence](https://img.shields.io/github/license/z4deepfz/SerialPort-Assistant)
+![platform](https://img.shields.io/badge/platform-windows%20|%20linux-lightgrey.svg)
+![version](https://img.shields.io/badge/version-0.5%20alpha-blue.svg)
 
 ## Begin
 
@@ -25,7 +28,7 @@ The project is quite **imperfect**, welcome to commit or open issus.
  - [ ] Multiple Language
  - [ ] English notes
  - [ ] Fix the compile problem under Linux
- - [ ] CI
+ - [x] CI
 
 ## Compile 
 
@@ -36,5 +39,4 @@ This project was developed under following projects:
  - wxMathPlot v0.1.2
  - Boost v1.73
  
-Running `cmake` to generate `Makefile` and `make` to compile.
-
+Use CMakeLists.txt to compile.
