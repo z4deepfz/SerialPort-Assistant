@@ -24,6 +24,7 @@ class serialGUIFrame: public wxFrame
                     wxBoxSizer* tain3_buttons_leftof_graph; // 放置图像左边的按钮
                     wxBoxSizer* tain4_chkbox;
             wxBoxSizer* tain1_ctrl;             // 放置串口控制区元件
+                wxBoxSizer* tain2_2buttons;
                 wxBoxSizer* tain2_choice_desc;  // 放置选项区元件的容器，水平
                     wxBoxSizer* tain3_text;   // 顺序放置静态文本
                     wxBoxSizer* tain3_choice;   // 顺序放置选项框
@@ -40,7 +41,7 @@ class serialGUIFrame: public wxFrame
         Serial_data* data;
         boost::asio::io_service IO_svr;
         boost::asio::serial_port IOdata;
-        uint8_t buf[4];
+        std::vector<uint8_t> buf;
         /* 标记位 */
         bool flagRecieve;           // 是否接收串口信号
         bool flagShowOnGrapgic;     // 是否将收到的内容展示在图像上
@@ -49,6 +50,8 @@ class serialGUIFrame: public wxFrame
 
     protected:
         void init_choice_boxes();
+        void modeIdle();
+        void modeWorking();
         /* 串口读写函数 */
         void asioOpen_serial_port(const char* port, int baud, int dbt, int par, int sbits);
         void asioClose_serial_port();
