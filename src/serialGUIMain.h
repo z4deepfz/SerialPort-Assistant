@@ -36,6 +36,7 @@ class serialGUIFrame: public wxFrame
         wxCheckBox *is_Recieve_data, *send_hex;
         wxButton   *Send_data_now;
         wxButton   *Start_display, *Stop_display, *Init_display;  // 图形控件的指令
+        wxStatusBar *Stb;
         wxTimer    *sampling_clk;
         mpWindow   *Graph;
         Serial_data* data;

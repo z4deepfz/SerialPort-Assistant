@@ -54,9 +54,14 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
       IO_svr(), IOdata(IO_svr), buf(512),
       flagRecieve(false), flagShowOnGrapgic(false), isSendHex(false)
 {
+    /* wxStatusBar */
+    Stb = new wxStatusBar(this);
+    Stb->SetFieldsCount(3);
+    SetStatusBar(Stb);
+
     /* wxPanel */
     top_panel = new wxPanel(this);
-    init_choice_boxes();
+
     /* wxButton */
     Open_serial_port= new wxButton(top_panel, idOpenPort, wxT("打开串口"));
     Clear_recieve   = new wxButton(top_panel, idClearTextCtrl, wxT("清空接收"));
@@ -80,7 +85,6 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
 
     /* wxBoxSizer */
     sp0_ctrl_text_area  = new wxBoxSizer(wxHORIZONTAL);
-
     tain1_ctrl = new wxBoxSizer(wxVERTICAL);
         tain2_2buttons      = new wxBoxSizer(wxHORIZONTAL);
         tain2_choice_desc   = new wxBoxSizer(wxHORIZONTAL);
@@ -109,9 +113,10 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
     scaX->SetLabelFormat(wxString("%.0f"));
     scaY->SetLabelFormat(wxString("%0.f"));
 
-    IO_svr.run(); /* 这里要激活一下service，否则第一次执行异步操作会阻塞 */
+    init_choice_boxes();
     bind_boxsizer();
     modeIdle();
+    IO_svr.run(); // 这里要激活一下service，否则第一次执行异步操作会阻塞
 }
 
 void serialGUIFrame::init_choice_boxes()
@@ -131,7 +136,6 @@ void serialGUIFrame::bind_boxsizer()
 {
     constexpr auto defStyle = wxEXPAND | wxALL;
     top_panel -> SetSizer(sp0_ctrl_text_area);
-
     sp0_ctrl_text_area -> Add(tain1_ctrl, 1, defStyle, 10);        // 左侧元件容器
         tain1_ctrl -> Add(tain2_choice_desc, 1, defStyle, 1);     // 选项元件
             tain2_choice_desc->Add(tain3_text, 1, defStyle, 0);
@@ -260,6 +264,7 @@ void serialGUIFrame::modeIdle()
     send_hex->Disable();
     Send_data_now->Disable();
     Open_serial_port->SetLabel(wxT("打开串口"));
+    Stb->SetStatusText(_("Idle"), 0);
     return;
 }
 
@@ -272,13 +277,14 @@ void serialGUIFrame::modeWorking()
     send_hex->Enable();
     Send_data_now->Enable();
     Open_serial_port->SetLabel(wxT("关闭串口"));
+    Stb->SetStatusText(_("Working"), 0);
     return;
 }
 
 void serialGUIFrame::update_display_range()
 {
     int cnt = data->getSize();
-    Graph->Fit(std::max(0,cnt-16), cnt, 0, std::max(data->getMaxValue()+100,255.0));
+    Graph->Fit(std::max(0,cnt-16), cnt, 0, std::max(data->getMaxValue()+64,255.0));
 }
 
 serialGUIFrame::~serialGUIFrame()
