@@ -66,10 +66,11 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
 void serialGUIFrame::init_choice_boxes()
 {
     /* wxChoice (with StaticText) */
+    choices[0] = enum_ports();
     for(int i=0; i<5; ++i){
         selection[i].first = new wxStaticText(top_panel, wxID_ANY, sel_label[i]);
         selection[i].second = new wxChoice(
-            top_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices_cnt[i], choices[i]
+            top_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices[i].size(), choices[i].data()
         );
         selection[i].second->SetSelection(0);
     }
@@ -183,7 +184,7 @@ void serialGUIFrame::evtOpenPort(wxCommandEvent& event)
         sampling_clk->Stop();
         auto gcid = [&](int id){return selection[id].second->GetSelection();};
         auto tport = choices[0][gcid(0)].c_str(); // 串口地址，传递char指针
-        auto tbaud = rbaud[gcid(1)]; // 波特率，转换成数字即可
+        auto tbaud = serialGUIFrame::rbaud[gcid(1)]; // 波特率，转换成数字即可
         auto tlen  = rlen[gcid(2)] ;  // 字长，下标+5即可
         auto tpari = gcid(3);   // 校验位，下标已经对应选项，无需处理
         auto tsbit = rstop[gcid(4)];   // 停止位，转换成浮点数后乘以10变成整数即可

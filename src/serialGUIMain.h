@@ -8,7 +8,7 @@
 #include "serialGUIApp.h"
 #include "Serial_data.h"
 #include <mathplot.h>
-#include <fstream>
+#include <iostream>
 #include <boost/bind/bind.hpp>
 
 class serialGUIFrame: public wxFrame
@@ -80,6 +80,8 @@ class serialGUIFrame: public wxFrame
     protected: // Assistant functions
         std::vector<char> wxstr2hex(const wxString& a);
         void update_rs_bytes();
+        std::vector<wxString> enum_ports();
+        bool try_open_port(const wxString& a);
     private:
         enum
         {
@@ -98,16 +100,13 @@ class serialGUIFrame: public wxFrame
         const wxString sel_label[5] = {
             wxT("串口"), wxT("波特率"), wxT("数据位"), wxT("校验位"), wxT("停止位")
         };
-        const wxString choices[5][20] = {
-            { "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8",
-              "COM9", "COM10", "COM11", "COM12", "COM13", "COM14", "COM15",
-              "COM16", "COM17", "COM18", "COM19", "COM20" },
+        std::vector<wxString> choices[5] = {
+            { },
             { "9600", "19200", "38400", "57600", "115200" },
             { "5", "6", "7", "8" },
             { "None", "Odd", "Even" },
             { "1", "1.5", "2" }
         };
-        const int choices_cnt[5] = {20, 5, 4, 3, 3};
         const int rbaud[5] = {9600, 19200, 38400, 57600, 115200};
         const int rlen[4] = {5, 6, 7, 8};
         const int rstop[3] = {10, 15, 20};

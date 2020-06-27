@@ -124,6 +124,36 @@ void serialGUIFrame::handle_write(const boost::system::error_code &e, std::size_
 
 void serialGUIFrame::update_rs_bytes()
 {
-    Stb->SetStatusText(wxString::Format("Recieve(bytes): %u", rcnt), 1);
-    Stb->SetStatusText(wxString::Format("Send(bytes): %u", scnt), 2);
+    Stb->SetStatusText(wxString::Format("Recieve: %u bytes", rcnt), 1);
+    Stb->SetStatusText(wxString::Format("Send: %u bytes", scnt), 2);
+}
+
+std::vector<wxString> serialGUIFrame::enum_ports()
+{
+    std::vector<wxString> ans;
+    for(int i=1; i<=20; ++i){
+        wxString tmp = "COM";
+        tmp << i;
+        //std::cout << "Trying " << tmp << std::endl;
+        if(try_open_port(tmp)){
+            ans.push_back(tmp);
+        }
+    }
+    return ans;
+}
+
+bool serialGUIFrame::try_open_port(const wxString& a)
+{
+    const auto tbaud = rbaud[0];
+    const auto tlen  = rlen[0] ;
+    const auto tpari = 1;
+    const auto tsbit = rstop[0];
+    try{
+        asioOpen_serial_port(a.c_str(), tbaud, tlen, tpari, tsbit);
+    }
+    catch (std::exception& e){
+        return false;
+    }
+    asioClose_serial_port();
+    return true;
 }
