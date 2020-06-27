@@ -109,7 +109,21 @@ void serialGUIFrame::handle_read(const boost::system::error_code& e, std::size_t
         Graph->Update();
         update_display_range();
     }
+    rcnt += sz;
+    update_rs_bytes();
     return;
 }
 
-void serialGUIFrame::handle_write(const boost::system::error_code &e, std::size_t sz) { }
+void serialGUIFrame::handle_write(const boost::system::error_code &e, std::size_t sz)
+{
+    // looks like if update the scnt here, there is a delay in data update
+    // so when sending, I update the scnt at once if IOdata.run() executed sucessfully
+    update_rs_bytes();
+    return;
+}
+
+void serialGUIFrame::update_rs_bytes()
+{
+    Stb->SetStatusText(wxString::Format("Recieve(bytes): %u", rcnt), 1);
+    Stb->SetStatusText(wxString::Format("Send(bytes): %u", scnt), 2);
+}

@@ -43,14 +43,20 @@ class serialGUIFrame: public wxFrame
         boost::asio::io_service IO_svr;
         boost::asio::serial_port IOdata;
         std::vector<uint8_t> buf;
-        /* 标记位 */
+        /* flags */
         bool flagRecieve;           // 是否接收串口信号
         bool flagShowOnGrapgic;     // 是否将收到的内容展示在图像上
         bool isSendHex;
         void bind_boxsizer();
 
+        /* counter */
+        unsigned int rcnt;  // recieving counter
+        unsigned int scnt;  // sending counter
+
     protected:
         void init_choice_boxes();
+        void init_elements();
+        void init_graphic();
         void modeIdle();
         void modeWorking();
         /* 串口读写函数 */
@@ -73,6 +79,7 @@ class serialGUIFrame: public wxFrame
         void update_display_range();
     protected: // Assistant functions
         std::vector<char> wxstr2hex(const wxString& a);
+        void update_rs_bytes();
     private:
         enum
         {
