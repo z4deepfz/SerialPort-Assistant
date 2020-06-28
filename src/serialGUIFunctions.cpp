@@ -1,6 +1,7 @@
 #include "serialGUIMain.h"
 #include <iostream>
-auto isHexNum = [](const char c){ return (c>='0'&&c<='9') || (c>='a'&&c<='f') || (c>='A'&&c<='F'); };
+#include <cctype>
+
 char c2Hex(const char c)
 {
     if(c>='0' && c<='9') return c-'0';
@@ -22,8 +23,8 @@ std::vector<char> serialGUIFrame::wxstr2hex(const wxString& a)
     std::vector<char> cbuf;
     char tmp;
     for(auto i: a){
-        auto valid = isHexNum(i);
-        auto space = (i==' ');
+        auto valid = isxdigit(i);
+        auto space = isspace(i);
         switch(dfa){
             case IDLE: {
                 if(valid) {
