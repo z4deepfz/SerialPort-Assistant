@@ -1,6 +1,7 @@
 #include "serialGUIMain.h"
+#include <iostream>
+#include <cctype>
 
-auto isHexNum = [](const char c){ return (c>='0'&&c<='9') || (c>='a'&&c<='f') || (c>='A'&&c<='F'); };
 char c2Hex(const char c)
 {
     if(c>='0' && c<='9') return c-'0';
@@ -22,8 +23,8 @@ std::vector<char> serialGUIFrame::wxstr2hex(const wxString& a)
     std::vector<char> cbuf;
     char tmp;
     for(auto i: a){
-        auto valid = isHexNum(i);
-        auto space = (i==' ');
+        auto valid = isxdigit(i);
+        auto space = isspace(i);
         switch(dfa){
             case IDLE: {
                 if(valid) {
@@ -109,7 +110,51 @@ void serialGUIFrame::handle_read(const boost::system::error_code& e, std::size_t
         Graph->Update();
         update_display_range();
     }
+    rcnt += sz;
+    update_rs_bytes();
     return;
 }
 
-void serialGUIFrame::handle_write(const boost::system::error_code &e, std::size_t sz) { }
+void serialGUIFrame::handle_write(const boost::system::error_code &e, std::size_t sz)
+{
+    // looks like if update the scnt here, there is a delay in data update
+    // so when sending, I update the scnt at once if IOdata.run() executed sucessfully
+    update_rs_bytes();
+    return;
+}
+
+void serialGUIFrame::update_rs_bytes()
+{
+    Stb->SetStatusText(wxString::Format("Recieve: %u bytes", rcnt), 1);
+    Stb->SetStatusText(wxString::Format("Send: %u bytes", scnt), 2);
+}
+
+std::vector<wxString> serialGUIFrame::enum_ports()
+{
+    std::vector<wxString> ans;
+    for(int i=1; i<=20; ++i){
+        wxString tmp = "COM";
+        tmp << i;
+        //std::cout << "Trying " << tmp << std::endl;
+        if(try_open_port(tmp)){
+            ans.push_back(tmp);
+        }
+    }
+    return ans;
+}
+
+bool serialGUIFrame::try_open_port(const wxString& a)
+{
+    const auto tbaud = rbaud[0];
+    const auto tlen  = rlen[0] ;
+    const auto tpari = 1;
+    const auto tsbit = rstop[0];
+    try{
+        asioOpen_serial_port(a.c_str(), tbaud, tlen, tpari, tsbit);
+    }
+    catch (std::exception& e){
+        return false;
+    }
+    asioClose_serial_port();
+    return true;
+}

@@ -1,4 +1,4 @@
-Serial Port Assistant v0.5a
+Serial Port Assistant v0.6a
 ====
 
 ![C/C++ CI](https://github.com/z4deepfz/SerialPort-Assistant/workflows/C/C++%20CI/badge.svg)
@@ -23,12 +23,23 @@ The project is quite **imperfect**, welcome to commit or open issus.
 *Following features are under consideration for next versions*
 
  - [x] CMakeLists.txt
- - [x] Switch ASCII and HEX mode for sending and recieving
- - [ ] Tool bar (but I think that's useless...)
+ - [x] Switch ASCII and HEX mode for sending
+ - [x] Status bar
  - [ ] Multiple Language
  - [ ] English notes
- - [ ] Fix the compile problem under Linux
+ - [x] Fix the compile problem under Linux
  - [x] CI
+ - [ ] Loop sending
+ - [ ] Send data from file
+ - [ ] Recieve data and save to file
+ - [ ] Provide *python* interface to implement custom script
+ 
+## Upgrade logs [v0.6-alpha]
+
+ - Added Status Bar to show the working status and recieve/send counter.
+ - Fixed the logic of HEX mode.
+ - Adjusted the interface layout. Now it looks more compact.
+ - Enumerate available ports when starting.
 
 ## Compile 
 
@@ -40,3 +51,4 @@ This project was developed under following projects:
  - Boost v1.73
  
 Use CMakeLists.txt to compile.
+Or if you are using Windows, turn to *release* to have a try.
