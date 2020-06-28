@@ -3,6 +3,7 @@
 
 #include <wx/app.h>
 
+/* version: 0.6-alpha */
 class serialGUIApp : public wxApp
 {
     public:

@@ -1,4 +1,4 @@
-Serial Port Assistant v0.5a
+Serial Port Assistant v0.6a
 ====
 
 ![C/C++ CI](https://github.com/z4deepfz/SerialPort-Assistant/workflows/C/C++%20CI/badge.svg)
@@ -33,6 +33,13 @@ The project is quite **imperfect**, welcome to commit or open issus.
  - [ ] Send data from file
  - [ ] Recieve data and save to file
  - [ ] Provide *python* interface to implement custom script
+ 
+## Upgrade logs [v0.6-alpha]
+
+ - Added Status Bar to show the working status and recieve/send counter.
+ - Fixed the logic of HEX mode.
+ - Adjusted the interface layout. Now it looks more compact.
+ - Enumerate available ports when starting.
 
 ## Compile 
 
