@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cctype>
 
-char c2Hex(const char c)
+inline char c2Hex(const char c)
 {
     if(c>='0' && c<='9') return c-'0';
     else if(c>='a' && c<='f') return c-'a'+10;
@@ -95,8 +95,12 @@ void serialGUIFrame::asioClose_serial_port()
     IOdata.close();
 }
 
-constexpr char rehex[17] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
-auto oct2hex = [](uint8_t x) { return std::string() + rehex[((x>>4)&0xf)] + rehex[x&0xf] + ' '; };
+
+inline std::string serialGUIFrame::oct2hex(uint8_t x)
+{
+    static constexpr char rehex[17] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+    return std::string() + rehex[((x>>4)&0xf)] + rehex[x&0xf] + ' ';
+};
 
 void serialGUIFrame::handle_read(const boost::system::error_code& e, std::size_t sz)
 {

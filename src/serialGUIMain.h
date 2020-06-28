@@ -82,6 +82,7 @@ class serialGUIFrame: public wxFrame
         void update_rs_bytes();
         std::vector<wxString> enum_ports();
         bool try_open_port(const wxString& a);
+        std::string oct2hex(uint8_t x);
     private:
         enum
         {

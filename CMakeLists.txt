@@ -7,7 +7,7 @@ find_path(wxMathPlot_INCLUDE_DIR mathplot.h)
 find_path(wxMathPlot_LIB_DIR libmathplot.a)
 
 # Compile source files
-set(CMAKE_CXX_FLAGS "-static -s -std=c++11 -O3 -Wno-deprecated-declarations") # specified flags
+set(CMAKE_CXX_FLAGS "-static -s -std=c++11 -O3 -Wno-deprecated-declarations -DWIN32_LEAN_AND_MEAN") # specified flags
 
 # Set Variables
 # On Windows
