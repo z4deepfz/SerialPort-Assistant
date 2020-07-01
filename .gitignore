@@ -10,3 +10,4 @@ src/*
 !src/GUI
 !src/*.cpp
 !src/*.h
+!src/locale

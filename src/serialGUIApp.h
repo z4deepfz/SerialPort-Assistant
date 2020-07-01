@@ -8,6 +8,8 @@ class serialGUIApp : public wxApp
 {
     public:
         virtual bool OnInit();
+    protected:
+        wxLocale m_locale;
 };
 
 #endif // SERIALGUIAPP_H

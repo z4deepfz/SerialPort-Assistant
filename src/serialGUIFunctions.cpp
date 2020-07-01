@@ -78,8 +78,8 @@ void serialGUIFrame::handle_write(const boost::system::error_code &e, std::size_
 
 void serialGUIFrame::update_rs_bytes()
 {
-    Stb->SetStatusText(wxString::Format("Recieve: %u bytes", rcnt), 1);
-    Stb->SetStatusText(wxString::Format("Send: %u bytes", scnt), 2);
+    Stb->SetStatusText(wxString::Format(_("Recieve: %u bytes"), rcnt), 1);
+    Stb->SetStatusText(wxString::Format(_("Send: %u bytes"), scnt), 2);
 }
 
 std::vector<wxString> serialGUIFrame::enum_ports()

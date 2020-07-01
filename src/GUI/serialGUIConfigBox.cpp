@@ -10,7 +10,7 @@ serialGUIConfigBox::serialGUIConfigBox(
     bDBit( new boxConfig(parent, { "5", "6", "7", "8" }) ),
     bPari( new boxConfig(parent, { "None", "Odd", "Even" }) ),
     bSBit( new boxConfig(parent, { "1", "1.5", "2"}) ),
-    tPort( new txtConfig(parent, _("COM")) ),
+    tPort( new txtConfig(parent, _("Port")) ),
     tBaud( new txtConfig(parent, _("Baudrate")) ),
     tDBit( new txtConfig(parent, _("Data Bits")) ),
     tPari( new txtConfig(parent, _("Parity")) ),
