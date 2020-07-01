@@ -5,11 +5,15 @@
     #include <wx/wx.h>
 #endif
 
-#include "serialGUIApp.h"
-#include "Serial_data.h"
+#include <wx/spinctrl.h>
 #include <mathplot.h>
 #include <iostream>
 #include <boost/bind/bind.hpp>
+
+#include "serialGUIApp.h"
+#include "Serial_data.h"
+#include "GUI/serialGUIConfigBox.h"
+#include "GUI/serialTextPlus.h"
 
 class serialGUIFrame: public wxFrame
 {
@@ -29,17 +33,19 @@ class serialGUIFrame: public wxFrame
                     wxBoxSizer* tain3_text;   // 顺序放置静态文本
                     wxBoxSizer* tain3_choice;   // 顺序放置选项框
                 wxBoxSizer* tain2_recieve_send_button; // 放置发送和接收控件
-        std::pair<wxStaticText*,wxChoice*> selection[5]; //按照从上到下的顺序分配
+        //std::pair<wxStaticText*,wxChoice*> selection[5]; //按照从上到下的顺序分配
         wxTextCtrl *Recieve_txtbox;         // 存放接收到的数据
-        wxTextCtrl *Send_Message;           // 缓存待发送的数据
+        wxTextPlus *Send_Message;           // 缓存待发送的数据
         wxButton   *Open_serial_port, *Clear_recieve;             // 【打开串口】和【清空接收】
         wxCheckBox *is_Recieve_data, *send_hex;
         wxButton   *Send_data_now;
         wxButton   *Start_display, *Stop_display, *Init_display;  // 图形控件的指令
         wxStatusBar *Stb;
         wxTimer    *sampling_clk;
+        wxSpinCtrl *displayWidth;
         mpWindow   *Graph;
         Serial_data* data;
+        serialGUIConfigBox* configBox;
         boost::asio::io_service IO_svr;
         boost::asio::serial_port IOdata;
         std::vector<uint8_t> buf;
@@ -54,7 +60,6 @@ class serialGUIFrame: public wxFrame
         unsigned int scnt;  // sending counter
 
     protected:
-        void init_choice_boxes();
         void init_elements();
         void init_graphic();
         void modeIdle();
@@ -98,19 +103,6 @@ class serialGUIFrame: public wxFrame
             idStopShowOn_Graphic,
             idSendHex
         };
-        const wxString sel_label[5] = {
-            wxT("串口"), wxT("波特率"), wxT("数据位"), wxT("校验位"), wxT("停止位")
-        };
-        std::vector<wxString> choices[5] = {
-            { },
-            { "9600", "19200", "38400", "57600", "115200" },
-            { "5", "6", "7", "8" },
-            { "None", "Odd", "Even" },
-            { "1", "1.5", "2" }
-        };
-        const int rbaud[5] = {9600, 19200, 38400, 57600, 115200};
-        const int rlen[4] = {5, 6, 7, 8};
-        const int rstop[3] = {10, 15, 20};
         void OnClose(wxCloseEvent& event);
         void OnQuit(wxCommandEvent& event);
         void OnAbout(wxCommandEvent& event);

@@ -7,5 +7,6 @@ build/*
 
 # only include `.h` and `.cpp` files in `src`
 src/*
+!src/GUI
 !src/*.cpp
 !src/*.h

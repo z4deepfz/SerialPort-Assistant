@@ -12,58 +12,7 @@ inline char c2Hex(const char c)
 
 std::vector<char> serialGUIFrame::wxstr2hex(const wxString& a)
 {
-    // Get the correct hexadecimal sequence by a simple deterministic finite automaton
-    enum hexDFA {
-        IDLE,
-        HEX1,
-        HEX2,
-        SYN_ERR
-    }; // define DFA
-    hexDFA dfa = IDLE;
-    std::vector<char> cbuf;
-    char tmp;
-    for(auto i: a){
-        auto valid = isxdigit(i);
-        auto space = isspace(i);
-        switch(dfa){
-            case IDLE: {
-                if(valid) {
-                    tmp = c2Hex(i);
-                    dfa = HEX1;
-                }
-                else if(!space) dfa = SYN_ERR;
-                break;
-            }
-            case HEX1: {
-                if(valid){
-                    tmp = (tmp<<4) | c2Hex(i);
-                    dfa = HEX2;
-                }
-                else if(space){
-                    cbuf.push_back(tmp);
-                    dfa = IDLE;
-                }
-                else dfa = SYN_ERR;
-                break;
-            }
-            case HEX2: {
-                if(space){
-                    cbuf.push_back(tmp);
-                    dfa = IDLE;
-                }
-                else dfa = SYN_ERR;
-                break;
-            }
-            case SYN_ERR: {
-                cbuf.clear();
-                return cbuf;
-            }
-        }
-    }
-    if(dfa==HEX1 || dfa==HEX2){
-        cbuf.push_back(tmp);
-    }
-    return cbuf;
+
 }
 
 
@@ -136,7 +85,7 @@ void serialGUIFrame::update_rs_bytes()
 std::vector<wxString> serialGUIFrame::enum_ports()
 {
     std::vector<wxString> ans;
-    for(int i=1; i<=20; ++i){
+    for(int i=1; i<=255; ++i){
         wxString tmp = "COM";
         tmp << i;
         //std::cout << "Trying " << tmp << std::endl;
@@ -149,14 +98,14 @@ std::vector<wxString> serialGUIFrame::enum_ports()
 
 bool serialGUIFrame::try_open_port(const wxString& a)
 {
-    const auto tbaud = rbaud[0];
-    const auto tlen  = rlen[0] ;
+    const auto tbaud = 9600;
+    const auto tlen  = 8;
     const auto tpari = 1;
-    const auto tsbit = rstop[0];
+    const auto tsbit = 10;
     try{
         asioOpen_serial_port(a.c_str(), tbaud, tlen, tpari, tsbit);
     }
-    catch (std::exception& e){
+    catch (...){
         return false;
     }
     asioClose_serial_port();

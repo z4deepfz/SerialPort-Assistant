@@ -43,6 +43,7 @@ ENDIF()
 
 # Begin Compile
 aux_source_directory(src SRC_LIST) # add source files
+aux_source_directory(src/GUI SRC_LIST)
 include_directories(${wxMathPlot_INCLUDE_DIR} ${wxWidgets_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 link_directories(${wxMathPlot_LIB_DIR} ${wxWidgets_LIB_DIR})
 
