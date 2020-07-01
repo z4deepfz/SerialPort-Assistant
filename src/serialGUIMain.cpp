@@ -87,16 +87,16 @@ void serialGUIFrame::init_elements()
     configBox = new serialGUIConfigBox(top_panel, enum_ports());
 
     /* wxButton */
-    Open_serial_port= new wxButton(top_panel, idOpenPort, wxT("打开串口"));
-    Clear_recieve   = new wxButton(top_panel, idClearTextCtrl, wxT("清空接收"));
-    Send_data_now   = new wxButton(top_panel, idSendData, wxT("发送"));
-    Start_display   = new wxButton(top_panel, idStartShowOn_Graphic, wxT("开始显示"));
-    Stop_display    = new wxButton(top_panel, idStopShowOn_Graphic, wxT("停止显示"));
-    Init_display    = new wxButton(top_panel, idClearGraph, wxT("初始化"));
+    Open_serial_port= new wxButton(top_panel, idOpenPort, _("Open"));
+    Clear_recieve   = new wxButton(top_panel, idClearTextCtrl, _("Clear Recieve"));
+    Send_data_now   = new wxButton(top_panel, idSendData, _("Send"));
+    Start_display   = new wxButton(top_panel, idStartShowOn_Graphic, _("Start Drawing"));
+    Stop_display    = new wxButton(top_panel, idStopShowOn_Graphic, _("Stop Drawing"));
+    Init_display    = new wxButton(top_panel, idClearGraph, _("Init"));
 
     /* wxCheckBox */
-    is_Recieve_data = new wxCheckBox(top_panel, idISRecieve, wxT("接受数据"));
-    send_hex = new wxCheckBox(top_panel, idSendHex, wxT("HEX模式"));
+    is_Recieve_data = new wxCheckBox(top_panel, idISRecieve, _("Recieve Data"));
+    send_hex = new wxCheckBox(top_panel, idSendHex, _("HEX Mode"));
 
     /* wxTimer */
     sampling_clk = new wxTimer(this, idTimer);
@@ -110,8 +110,8 @@ void serialGUIFrame::init_elements()
 
 void serialGUIFrame::init_graphic()
 {
-    auto scaX = new mpScaleX(wxT("Cases"), mpALIGN_BORDER_LEFT, false);
-    auto scaY = new mpScaleY(wxT("Value"), mpALIGN_BORDER_BOTTOM, false);
+    auto scaX = new mpScaleX(_("Cases"), mpALIGN_BORDER_LEFT, false);
+    auto scaY = new mpScaleY(_("Value"), mpALIGN_BORDER_BOTTOM, false);
     data = new Serial_data();
     data->SetPen(wxPen(wxColor(0, 128, 255), 5));
     data->SetDrawOutsideMargins(false);
@@ -141,7 +141,7 @@ void serialGUIFrame::evtOpenPort(wxCommandEvent& event)
             asioOpen_serial_port(cfg.COM, cfg.baud, cfg.databits, cfg.parity, cfg.stopbits);
         }
         catch (std::exception &e){
-            wxMessageBox(e.what(), wxT("串口打开失败"));
+            wxMessageBox(e.what(), _("Failed to open port"));
             return;
         }
         sampling_clk->Start(1000);
@@ -169,7 +169,7 @@ void serialGUIFrame::evtSending(wxCommandEvent& event)
 {
     if(IOdata.is_open()) { // make sure the port has been opened before sending
         if(Send_Message->empty()){
-            wxMessageBox(wxT("没有数据"), wxT("提示"));
+            wxMessageBox(_("No Data"), _("Note"));
             return;
         }
         if(isSendHex){
@@ -181,7 +181,7 @@ void serialGUIFrame::evtSending(wxCommandEvent& event)
                 scnt += cbuf.size();
             }
             else{
-                wxMessageBox(wxT("格式错误"), wxT("错误"), wxICON_ERROR);
+                wxMessageBox(_("Syntax Error"), _("Error"), wxICON_ERROR);
                 return;
             }
         }
@@ -197,7 +197,7 @@ void serialGUIFrame::evtSending(wxCommandEvent& event)
         Send_Message->Clear();
     }
     else{
-        wxMessageBox(wxT("端口尚未打开"), wxT("提示"), wxICON_ERROR);
+        wxMessageBox(_("Port is closed"), _("Note"), wxICON_ERROR);
     }
 }
 
@@ -224,7 +224,7 @@ void serialGUIFrame::modeIdle()
     is_Recieve_data->Disable();
     send_hex->Disable();
     Send_data_now->Disable();
-    Open_serial_port->SetLabel(wxT("打开串口"));
+    Open_serial_port->SetLabel(_("Open"));
     Stb->SetStatusText(_("Idle"), 0);
     update_rs_bytes();
     return;
@@ -236,7 +236,7 @@ void serialGUIFrame::modeWorking()
     is_Recieve_data->Enable();
     send_hex->Enable();
     Send_data_now->Enable();
-    Open_serial_port->SetLabel(wxT("关闭串口"));
+    Open_serial_port->SetLabel(_("Close"));
     Stb->SetStatusText(_("Working"), 0);
     update_rs_bytes();
     return;

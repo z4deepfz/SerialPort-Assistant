@@ -10,11 +10,11 @@ serialGUIConfigBox::serialGUIConfigBox(
     bDBit( new boxConfig(parent, { "5", "6", "7", "8" }) ),
     bPari( new boxConfig(parent, { "None", "Odd", "Even" }) ),
     bSBit( new boxConfig(parent, { "1", "1.5", "2"}) ),
-    tPort( new txtConfig(parent, wxT("串口")) ),
-    tBaud( new txtConfig(parent, wxT("波特率")) ),
-    tDBit( new txtConfig(parent, wxT("数据位")) ),
-    tPari( new txtConfig(parent, wxT("校验位")) ),
-    tSBit( new txtConfig(parent, wxT("停止位")) )
+    tPort( new txtConfig(parent, _("COM")) ),
+    tBaud( new txtConfig(parent, _("Baudrate")) ),
+    tDBit( new txtConfig(parent, _("Data Bits")) ),
+    tPari( new txtConfig(parent, _("Parity")) ),
+    tSBit( new txtConfig(parent, _("Stop Bits")) )
 
 {
     constexpr auto defStyle = wxEXPAND | wxALL;
