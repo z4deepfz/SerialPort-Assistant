@@ -10,9 +10,9 @@ GUILineChart::GUILineChart(wxWindow *parent):
     wxPanel(parent, wxID_ANY),
     top_box( new wxBoxSizer(wxHORIZONTAL) ),
     sizerCtrl( new wxBoxSizer(wxVERTICAL) ),
-    isShow( new wxCheckBox((wxPanel*)this, idCheckBox_Show, _("Show on graph")) ),
-    buttClean( new wxButton((wxPanel*)this, idButton_Clean, _("Clear")) ),
-    graphSize( new wxSpinCtrl((wxPanel*)this, idChangeSize, wxT("16")) ),
+    isShow( new wxCheckBox((wxPanel*)this, idCheckBox_Show, _("Show on graph"), wxDefaultPosition, wxSize(120,-1)) ),
+    buttClean( new wxButton((wxPanel*)this, idButton_Clean, _("Clear"), wxDefaultPosition, wxSize(100,-1)) ),
+    graphSize( new wxSpinCtrl((wxPanel*)this, idChangeSize, wxT("16"), wxDefaultPosition, wxSize(100,-1)) ),
     mpGraph( new mpWindow((wxPanel*)this, wxID_ANY) ),
     scaX( new mpScaleX(_("Cases"), mpALIGN_BORDER_LEFT, false) ),
     scaY( new mpScaleY(_("Value"), mpALIGN_BORDER_BOTTOM, false) ),
@@ -37,9 +37,9 @@ GUILineChart::GUILineChart(wxWindow *parent):
     SetSizer(top_box);
     top_box->Add(sizerCtrl, 1, defStyle, 0);
     top_box->Add(mpGraph, 8, defStyle, 5);
-    sizerCtrl->Add(buttClean, 0, defStyle, 5);
     sizerCtrl->Add(isShow, 0, defStyle, 5);
     sizerCtrl->Add(graphSize, 0, defStyle, 5);
+    sizerCtrl->Add(buttClean, 0, defStyle, 5);
 }
 
 void GUILineChart::OnButton_Clean(wxCommandEvent &event)
