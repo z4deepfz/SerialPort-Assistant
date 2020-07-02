@@ -7,7 +7,7 @@ find_path(wxMathPlot_INCLUDE_DIR mathplot.h)
 find_path(wxMathPlot_LIB_DIR libmathplot.a)
 
 # Compile source files
-set(CMAKE_CXX_FLAGS "-static -s -std=c++11 -O3 -Wno-deprecated-declarations") # specified flags
+set(CMAKE_CXX_FLAGS "-static -s -std=c++11 -O3 -Wno-deprecated-declarations -DWIN32_LEAN_AND_MEAN") # specified flags
 
 # Set Variables
 # On Windows
@@ -43,6 +43,7 @@ ENDIF()
 
 # Begin Compile
 aux_source_directory(src SRC_LIST) # add source files
+aux_source_directory(src/GUI SRC_LIST)
 include_directories(${wxMathPlot_INCLUDE_DIR} ${wxWidgets_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
 link_directories(${wxMathPlot_LIB_DIR} ${wxWidgets_LIB_DIR})
 

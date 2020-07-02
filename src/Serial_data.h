@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 
-class Serial_data : public mpFX
+class Serial_data : virtual public mpFX
 {
     public:
         Serial_data();          // 默认构造函数
@@ -20,9 +20,6 @@ class Serial_data : public mpFX
 
     protected:
         std::vector<double> data;
-        void handle_read(uint8_t buf[]);
-
-    private:
         double bufmax;
 };
 

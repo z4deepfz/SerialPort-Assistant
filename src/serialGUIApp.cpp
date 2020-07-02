@@ -13,11 +13,12 @@ IMPLEMENT_APP(serialGUIApp);
 
 bool serialGUIApp::OnInit()
 {
-    serialGUIFrame* frame = new serialGUIFrame(0L, wxT("SerialPort-Assistant"));
+    m_locale.AddCatalogLookupPathPrefix(wxT("locale"));
+    m_locale.AddCatalog(wxT("zh_CN"));
+    serialGUIFrame* frame = new serialGUIFrame(0L, _("SerialPort-Assistant"));
     #ifdef __WINDOWS__
     frame->SetIcon(wxICON(aaaa)); // To Set App Icon
     #endif // __WINDOWS__
     frame->Show();
-
     return true;
 }

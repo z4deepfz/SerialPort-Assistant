@@ -1,0 +1,132 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2020-07-02 23:40+0800\n"
+"PO-Revision-Date: 2020-07-03 02:39+0800\n"
+"Last-Translator: z4deepfz\n"
+"Language-Team: \n"
+"Language: zh\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
+"X-Poedit-Basepath: ..\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Poedit-KeywordsList: _\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: GUI\n"
+
+#: GUI/GUI_Graphic.cpp:10
+msgid "Show on graph"
+msgstr "在图像上显示"
+
+#: GUI/GUI_Graphic.cpp:11
+msgid "Clear"
+msgstr "清除"
+
+#: GUI/GUI_Graphic.cpp:14
+msgid "Cases"
+msgstr "数据点"
+
+#: GUI/GUI_Graphic.cpp:15
+msgid "Value"
+msgstr "值"
+
+#: GUI/serialGUIConfigBox.cpp:13
+msgid "Port"
+msgstr "串口"
+
+#: GUI/serialGUIConfigBox.cpp:14
+msgid "Baudrate"
+msgstr "波特率"
+
+#: GUI/serialGUIConfigBox.cpp:15
+msgid "Data Bits"
+msgstr "数据位"
+
+#: GUI/serialGUIConfigBox.cpp:16
+msgid "Parity"
+msgstr "校验位"
+
+#: GUI/serialGUIConfigBox.cpp:17
+msgid "Stop Bits"
+msgstr "停止位"
+
+#: serialGUIApp.cpp:18
+msgid "SerialPort-Assistant"
+msgstr "串口助手"
+
+#: serialGUIFunctions.cpp:75
+#, c-format
+msgid "Recieve: %u bytes"
+msgstr "已接收: %u 字节"
+
+#: serialGUIFunctions.cpp:76
+#, c-format
+msgid "Send: %u bytes"
+msgstr "已发送: %u 字节"
+
+#: serialGUIMain.cpp:90 serialGUIMain.cpp:224
+msgid "Open"
+msgstr "打开串口"
+
+#: serialGUIMain.cpp:91
+msgid "Clear Recieve"
+msgstr "清除接收"
+
+#: serialGUIMain.cpp:92
+msgid "Send"
+msgstr "发送数据"
+
+#: serialGUIMain.cpp:98
+msgid "Recieve Data"
+msgstr "接收数据"
+
+#: serialGUIMain.cpp:99
+msgid "HEX Mode"
+msgstr "HEX模式"
+
+#: serialGUIMain.cpp:141
+msgid "Failed to open port"
+msgstr "打开端口失败"
+
+#: serialGUIMain.cpp:169
+msgid "No Data"
+msgstr "没有数据"
+
+#: serialGUIMain.cpp:169 serialGUIMain.cpp:197
+msgid "Note"
+msgstr "提示"
+
+#: serialGUIMain.cpp:181
+msgid "Syntax Error"
+msgstr "格式错误"
+
+#: serialGUIMain.cpp:181
+msgid "Error"
+msgstr "错误"
+
+#: serialGUIMain.cpp:197
+msgid "Port is closed"
+msgstr "端口关闭"
+
+#: serialGUIMain.cpp:225
+msgid "Idle"
+msgstr "就绪"
+
+#: serialGUIMain.cpp:236
+msgid "Close"
+msgstr "关闭端口"
+
+#: serialGUIMain.cpp:237
+msgid "Working"
+msgstr "运行中"
+
+#~ msgid "Start Drawing"
+#~ msgstr "开始绘图"
+
+#~ msgid "Stop Drawing"
+#~ msgstr "停止绘图"
+
+#~ msgid "Init"
+#~ msgstr "初始化"

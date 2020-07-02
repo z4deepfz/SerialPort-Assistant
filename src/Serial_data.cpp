@@ -1,5 +1,4 @@
 ﻿#include "Serial_data.h"
-#include <iostream>
 #include <boost/asio.hpp>
 
 Serial_data::Serial_data(): mpFX( wxT("Serial 1") ), bufmax(0)
