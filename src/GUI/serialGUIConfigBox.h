@@ -13,10 +13,10 @@ class serialGUIConfigBox: public wxBoxSizer
     public:
         struct portConfig{
             char COM[6];
-            unsigned baud; // a uint
-            unsigned databits;   // 5, 6, 7, 8
-            unsigned stopbits;   // 10, 15, 20
-            unsigned parity;     // none=0, odd=1, even=2
+            unsigned baud: 20;
+            unsigned databits: 4;   // 5, 6, 7, 8
+            unsigned stopbits: 5;   // 10, 15, 20
+            unsigned parity: 2;     // none=0, odd=1, even=2
         };
 
     protected:

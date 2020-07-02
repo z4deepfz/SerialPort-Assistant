@@ -10,12 +10,6 @@ inline char c2Hex(const char c)
     else return 0;
 }
 
-std::vector<char> serialGUIFrame::wxstr2hex(const wxString& a)
-{
-
-}
-
-
 /** following docking Boost::asio **/
 void serialGUIFrame::asioOpen_serial_port
     (const char* port, int baud, int dbt, int par, int sbits)

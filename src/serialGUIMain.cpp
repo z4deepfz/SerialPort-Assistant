@@ -32,6 +32,7 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
     bind_boxsizer();
     modeIdle();
     IO_svr.run(); // 这里要激活一下service，否则第一次执行异步操作会阻塞
+    top_panel->Layout();
     return;
 }
 

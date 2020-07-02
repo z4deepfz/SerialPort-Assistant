@@ -49,15 +49,18 @@ class serialGUIFrame: public wxFrame
         boost::asio::io_service IO_svr;
         boost::asio::serial_port IOdata;
         std::vector<uint8_t> buf;
+
+        /* counter */
+        unsigned int scnt;  // sending counter
+        unsigned int rcnt;  // recieving counter
+
         /* flags */
         bool flagRecieve;           // 是否接收串口信号
         bool flagShowOnGrapgic;     // 是否将收到的内容展示在图像上
         bool isSendHex;
         void bind_boxsizer();
 
-        /* counter */
-        unsigned int rcnt;  // recieving counter
-        unsigned int scnt;  // sending counter
+
 
     protected:
         void init_elements();
