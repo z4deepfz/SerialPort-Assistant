@@ -22,7 +22,6 @@ BEGIN_EVENT_TABLE(serialGUIFrame, wxFrame)
 END_EVENT_TABLE()
 
 
-
 serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
     : wxFrame(frame, -1, title, wxDefaultPosition, wxSize(800, 550),
       wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER ),
