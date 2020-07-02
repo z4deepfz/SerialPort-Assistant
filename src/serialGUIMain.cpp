@@ -28,11 +28,11 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
       flagRecieve(false), flagShowOnGrapgic(false), isSendHex(false)
 {
     init_elements();
-    init_graphic();
+    //init_graphic();
     bind_boxsizer();
     modeIdle();
     IO_svr.run(); // 这里要激活一下service，否则第一次执行异步操作会阻塞
-    top_panel->Layout();
+    //top_panel->Layout();
     return;
 }
 
@@ -66,12 +66,7 @@ void serialGUIFrame::bind_boxsizer()
 
     sp0_ctrl_text_area -> Add(tain1_text_graph, 4, defStyle, 10);  // 右侧元件容器
         tain1_text_graph -> Add(Recieve_txtbox, 1, defStyle, 5);   // 保存接收到的内容
-        tain1_text_graph -> Add(sp2_button_graph, 1, defStyle, 0);  // 按钮集合
-            sp2_button_graph -> Add(tain3_buttons_leftof_graph, 1, defStyle, 0);
-                tain3_buttons_leftof_graph -> Add(Start_display, 1, defStyle, 5);
-                tain3_buttons_leftof_graph -> Add(Stop_display, 1, defStyle, 5);
-                tain3_buttons_leftof_graph -> Add(Init_display, 1, defStyle, 5);
-            sp2_button_graph -> Add(Graph, 10, defStyle, 5);
+        tain1_text_graph -> Add((wxBoxSizer*)Graph, 1, defStyle, 0);  // 按钮集合
 }
 
 void serialGUIFrame::init_elements()
@@ -86,14 +81,18 @@ void serialGUIFrame::init_elements()
 
     /* config box */
     configBox = new serialGUIConfigBox(top_panel, enum_ports());
+//    configBox = new serialGUIConfigBox(top_panel, std::vector<wxString>());
+
+    /* Line Chart */
+    Graph = new GUILineChart(top_panel);
 
     /* wxButton */
     Open_serial_port= new wxButton(top_panel, idOpenPort, _("Open"));
     Clear_recieve   = new wxButton(top_panel, idClearTextCtrl, _("Clear Recieve"));
     Send_data_now   = new wxButton(top_panel, idSendData, _("Send"));
-    Start_display   = new wxButton(top_panel, idStartShowOn_Graphic, _("Start Drawing"));
-    Stop_display    = new wxButton(top_panel, idStopShowOn_Graphic, _("Stop Drawing"));
-    Init_display    = new wxButton(top_panel, idClearGraph, _("Init"));
+    //Start_display   = new wxButton(top_panel, idStartShowOn_Graphic, _("Start Drawing"));
+    //Stop_display    = new wxButton(top_panel, idStopShowOn_Graphic, _("Stop Drawing"));
+    //Init_display    = new wxButton(top_panel, idClearGraph, _("Init"));
 
     /* wxCheckBox */
     is_Recieve_data = new wxCheckBox(top_panel, idISRecieve, _("Recieve Data"));
@@ -109,24 +108,21 @@ void serialGUIFrame::init_elements()
     return;
 }
 
+/*
 void serialGUIFrame::init_graphic()
 {
     auto scaX = new mpScaleX(_("Cases"), mpALIGN_BORDER_LEFT, false);
     auto scaY = new mpScaleY(_("Value"), mpALIGN_BORDER_BOTTOM, false);
-    data = new Serial_data();
-    data->SetPen(wxPen(wxColor(0, 128, 255), 5));
-    data->SetDrawOutsideMargins(false);
+    Graph = new GUILineChart(top_panel);
+    Graph->SetPen(wxPen(wxColor(0, 128, 255), 5));
+    Graph->SetDrawOutsideMargins(false);
     scaX->SetPen(wxPen(wxColor(0,0,0), 2));
     scaY->SetPen(wxPen(wxColor(0,0,0), 2));
-    Graph = new mpWindow(top_panel, wxID_ANY);
-    Graph->AddLayer( scaX );
-    Graph->AddLayer( scaY );
-    Graph->AddLayer( data );
     Graph->EnableMousePanZoom(false);
-    Graph->Fit(0, 16, -10, 1000);
+    Graph->mpWindow::Fit(0, 16, -10, 1000);
     scaX->SetLabelFormat(wxString("%.0f"));
     scaY->SetLabelFormat(wxString("%0.f"));
-}
+}*/
 
 /** 以下是事件处理函数 **/
 void serialGUIFrame::evtOpenPort(wxCommandEvent& event)
@@ -216,12 +212,12 @@ void serialGUIFrame::evtFlagRecieve(wxCommandEvent& event)
 void serialGUIFrame::evtSendHex(wxCommandEvent& event) { isSendHex=send_hex->GetValue(); }
 void serialGUIFrame::evtStartSampling(wxCommandEvent& event){ flagShowOnGrapgic = true; }  // 启动采样
 void serialGUIFrame::evtStopSampling(wxCommandEvent& event) { flagShowOnGrapgic = false; } // 停止采样
-void serialGUIFrame::evtClearGraph(wxCommandEvent& event)   { data->Clear(); Graph->UpdateAll(); }// 清空
+void serialGUIFrame::evtClearGraph(wxCommandEvent& event)   { Graph->Serial_data::Clear(); Graph->Update(); }// 清空
 void serialGUIFrame::evtClearText(wxCommandEvent& event)    { Recieve_txtbox->Clear(); }
 
 void serialGUIFrame::modeIdle()
 {
-    //configBox->Enable();
+    configBox->Enable();
     is_Recieve_data->Disable();
     send_hex->Disable();
     Send_data_now->Disable();
@@ -233,7 +229,7 @@ void serialGUIFrame::modeIdle()
 
 void serialGUIFrame::modeWorking()
 {
-    //configBox->Disable();
+    configBox->Disable();
     is_Recieve_data->Enable();
     send_hex->Enable();
     Send_data_now->Enable();
@@ -243,14 +239,17 @@ void serialGUIFrame::modeWorking()
     return;
 }
 
+/*
 void serialGUIFrame::update_display_range()
 {
-    int cnt = data->getSize();
-    Graph->Fit(std::max(0,cnt-16), cnt, 0, std::max(data->getMaxValue()+64,255.0));
+    int cnt = Graph->getSize();
+    Graph->mpWindow::Fit(std::max(0,cnt-16), cnt, 0, std::max(Graph->getMaxValue()+64,255.0));
 }
+*/
 
 serialGUIFrame::~serialGUIFrame()
 {
+
 }
 
 void serialGUIFrame::OnClose(wxCloseEvent &event)

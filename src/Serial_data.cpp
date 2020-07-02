@@ -24,5 +24,6 @@ double Serial_data::GetY(double x) // 对接wxWidget的部分
 
 Serial_data::~Serial_data()
 {
+    std::cout << "Serial_data dtor\n";
     //dtor
 }

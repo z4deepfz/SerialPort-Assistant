@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 
-class Serial_data : public mpFX
+class Serial_data : virtual public mpFX
 {
     public:
         Serial_data();          // 默认构造函数

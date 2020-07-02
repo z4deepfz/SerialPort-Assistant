@@ -14,6 +14,7 @@
 #include "Serial_data.h"
 #include "GUI/serialGUIConfigBox.h"
 #include "GUI/serialTextPlus.h"
+#include "GUI/GUI_Graphic.h"
 
 class serialGUIFrame: public wxFrame
 {
@@ -39,12 +40,11 @@ class serialGUIFrame: public wxFrame
         wxButton   *Open_serial_port, *Clear_recieve;             // 【打开串口】和【清空接收】
         wxCheckBox *is_Recieve_data, *send_hex;
         wxButton   *Send_data_now;
-        wxButton   *Start_display, *Stop_display, *Init_display;  // 图形控件的指令
+        //wxButton   *Start_display, *Stop_display, *Init_display;  // 图形控件的指令
         wxStatusBar *Stb;
         wxTimer    *sampling_clk;
         wxSpinCtrl *displayWidth;
-        mpWindow   *Graph;
-        Serial_data* data;
+        GUILineChart *Graph;
         serialGUIConfigBox* configBox;
         boost::asio::io_service IO_svr;
         boost::asio::serial_port IOdata;
@@ -64,7 +64,7 @@ class serialGUIFrame: public wxFrame
 
     protected:
         void init_elements();
-        void init_graphic();
+        //void init_graphic();
         void modeIdle();
         void modeWorking();
         /* 串口读写函数 */
@@ -86,7 +86,6 @@ class serialGUIFrame: public wxFrame
         void evtSendHex(wxCommandEvent& event);
         void update_display_range();
     protected: // Assistant functions
-        std::vector<char> wxstr2hex(const wxString& a);
         void update_rs_bytes();
         std::vector<wxString> enum_ports();
         bool try_open_port(const wxString& a);

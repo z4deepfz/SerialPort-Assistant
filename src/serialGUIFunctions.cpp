@@ -49,13 +49,13 @@ void serialGUIFrame::handle_read(const boost::system::error_code& e, std::size_t
 {
     for(std::size_t i=0; i<sz; ++i){
         if(flagShowOnGrapgic){
-            data->addElement(buf[i]);
+            Graph->addElement(buf[i]);
         }
         Recieve_txtbox->AppendText( oct2hex(buf[i]) );
     }
     if(flagShowOnGrapgic){
         Graph->Update();
-        update_display_range();
+        //update_display_range();
     }
     rcnt += sz;
     update_rs_bytes();
