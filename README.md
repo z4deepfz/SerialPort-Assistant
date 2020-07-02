@@ -1,4 +1,4 @@
-Serial Port Assistant v0.6a
+Serial Port Assistant v0.7a
 ====
 
 ![C/C++ CI](https://github.com/z4deepfz/SerialPort-Assistant/workflows/C/C++%20CI/badge.svg)
@@ -20,26 +20,30 @@ The project is quite **imperfect**, welcome to commit or open issus.
  
 ## TODO
 
-*Following features are under consideration for next versions*
+*Following features will be supported in v1.0*
 
  - [x] CMakeLists.txt
  - [x] Switch ASCII and HEX mode for sending
  - [x] Status bar
- - [ ] Multiple Language
- - [ ] English notes
+ - [x] Multiple Language
  - [x] Fix the compile problem under Linux
  - [x] CI
  - [ ] Loop sending
  - [ ] Send data from file
  - [ ] Recieve data and save to file
- - [ ] Provide *python* interface to implement custom script
  
-## Upgrade logs [v0.6-alpha]
+*Following features may be added in future versions*
+ 
+ - [ ] Provide *python* interface to implement custom script
+ - [ ] English notes 
+## Upgrade logs [v0.7-alpha]
 
- - Added Status Bar to show the working status and recieve/send counter.
- - Fixed the logic of HEX mode.
- - Adjusted the interface layout. Now it looks more compact.
- - Enumerate available ports when starting.
+ - i18n is supported via `.po` file. Now anyone can submit a translation.
+ - Update layout.
+ - Cut off some useless functions.
+ - Bug fix.
+ 
+ Remark: 
 
 ## Compile 
 
