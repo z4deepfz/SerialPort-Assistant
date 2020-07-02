@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2020-07-02 23:40+0800\n"
-"PO-Revision-Date: 2020-07-02 23:40+0800\n"
+"PO-Revision-Date: 2020-07-03 02:39+0800\n"
 "Last-Translator: z4deepfz\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -68,7 +68,7 @@ msgstr "已发送: %u 字节"
 
 #: serialGUIMain.cpp:90 serialGUIMain.cpp:224
 msgid "Open"
-msgstr "打开"
+msgstr "打开串口"
 
 #: serialGUIMain.cpp:91
 msgid "Clear Recieve"
@@ -76,7 +76,7 @@ msgstr "清除接收"
 
 #: serialGUIMain.cpp:92
 msgid "Send"
-msgstr "发送"
+msgstr "发送数据"
 
 #: serialGUIMain.cpp:98
 msgid "Recieve Data"
