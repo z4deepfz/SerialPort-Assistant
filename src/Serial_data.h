@@ -20,9 +20,6 @@ class Serial_data : virtual public mpFX
 
     protected:
         std::vector<double> data;
-        void handle_read(uint8_t buf[]);
-
-    private:
         double bufmax;
 };
 

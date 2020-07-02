@@ -36,7 +36,7 @@ serialGUIConfigBox::serialGUIConfigBox(
     /* */
     bPort->SetSelection(0);
     bBaud->SetSelection(0);
-    bDBit->SetSelection(0);
+    bDBit->SetSelection(3);
     bPari->SetSelection(0);
     bSBit->SetSelection(0);
     return;

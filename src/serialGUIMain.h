@@ -7,7 +7,6 @@
 
 #include <wx/spinctrl.h>
 #include <mathplot.h>
-#include <iostream>
 #include <boost/bind/bind.hpp>
 
 #include "serialGUIApp.h"
@@ -56,7 +55,6 @@ class serialGUIFrame: public wxFrame
 
         /* flags */
         bool flagRecieve;           // 是否接收串口信号
-        bool flagShowOnGrapgic;     // 是否将收到的内容展示在图像上
         bool isSendHex;
         void bind_boxsizer();
 
@@ -64,7 +62,6 @@ class serialGUIFrame: public wxFrame
 
     protected:
         void init_elements();
-        //void init_graphic();
         void modeIdle();
         void modeWorking();
         /* 串口读写函数 */
@@ -77,9 +74,6 @@ class serialGUIFrame: public wxFrame
         /* 事件处理函数 */
         void evtOpenPort(wxCommandEvent& event);
         void evtSampling(wxTimerEvent& event);
-        void evtStartSampling(wxCommandEvent& event);
-        void evtClearGraph(wxCommandEvent& event);
-        void evtStopSampling(wxCommandEvent& event);
         void evtClearText(wxCommandEvent& event);
         void evtSending(wxCommandEvent& event);
         void evtFlagRecieve(wxCommandEvent& event);

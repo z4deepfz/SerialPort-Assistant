@@ -1,5 +1,4 @@
 ﻿#include "Serial_data.h"
-#include <iostream>
 #include <boost/asio.hpp>
 
 Serial_data::Serial_data(): mpFX( wxT("Serial 1") ), bufmax(0)
@@ -24,6 +23,5 @@ double Serial_data::GetY(double x) // 对接wxWidget的部分
 
 Serial_data::~Serial_data()
 {
-    std::cout << "Serial_data dtor\n";
     //dtor
 }

@@ -1,5 +1,4 @@
 #include "serialGUIMain.h"
-#include <iostream>
 #include <cctype>
 
 inline char c2Hex(const char c)
@@ -48,14 +47,8 @@ inline std::string serialGUIFrame::oct2hex(uint8_t x)
 void serialGUIFrame::handle_read(const boost::system::error_code& e, std::size_t sz)
 {
     for(std::size_t i=0; i<sz; ++i){
-        if(flagShowOnGrapgic){
-            Graph->addElement(buf[i]);
-        }
+        Graph->addElement(buf[i]);
         Recieve_txtbox->AppendText( oct2hex(buf[i]) );
-    }
-    if(flagShowOnGrapgic){
-        Graph->Update();
-        //update_display_range();
     }
     rcnt += sz;
     update_rs_bytes();
