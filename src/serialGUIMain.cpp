@@ -114,12 +114,12 @@ void serialGUIFrame::init_elements()
 /** Following are event handling functions **/
 void serialGUIFrame::evtOpenPort(wxCommandEvent& event)
 {
+    sampling_clk->Stop();
     if(IOdata.is_open()){
         asioClose_serial_port();
         modeIdle();
     }
     else{
-        sampling_clk->Stop();
         auto cfg = configBox->getConfig();
         try{
             asioOpen_serial_port(cfg.COM, cfg.baud, cfg.databits, cfg.parity, cfg.stopbits);
