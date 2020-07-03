@@ -4,7 +4,7 @@ Serial Port Assistant v0.7a
 ![C/C++ CI](https://github.com/z4deepfz/SerialPort-Assistant/workflows/C/C++%20CI/badge.svg)
 ![licence](https://img.shields.io/github/license/z4deepfz/SerialPort-Assistant)
 ![platform](https://img.shields.io/badge/platform-windows%20|%20linux-lightgrey.svg)
-![version](https://img.shields.io/badge/version-0.5%20alpha-blue.svg)
+![version](https://img.shields.io/badge/version-0.7%20alpha-blue.svg)
 
 ## Begin
 
