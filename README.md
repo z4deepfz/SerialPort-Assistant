@@ -28,8 +28,8 @@ The project is quite **imperfect**, welcome to commit or open issus.
  - [x] Multiple Language
  - [x] Fix the compile problem under Linux
  - [x] CI
- - [ ] Loop sending
- - [ ] Send data from file
+ - [x] Loop sending
+ - [x] Send data from file
  - [ ] Recieve data and save to file
  
 *Following features may be added in future versions*
