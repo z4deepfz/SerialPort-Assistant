@@ -6,6 +6,7 @@
 #endif
 
 #include <wx/spinctrl.h>
+#include <wx/file.h>
 #include <mathplot.h>
 #include <boost/bind/bind.hpp>
 
@@ -26,6 +27,8 @@ class serialGUIFrame: public wxFrame
             wxBoxSizer* tain1_text_graph;   // 放置接收文本框和图像
                 wxBoxSizer* sp2_button_graph;   // 分割按钮和图像
                     wxBoxSizer* tain3_buttons_leftof_graph; // 放置图像左边的按钮
+                    wxBoxSizer* tain4_btn_and_loop;
+                        wxBoxSizer* tain5_delay;
                     wxBoxSizer* tain4_chkbox;
             wxBoxSizer* tain1_ctrl;             // 放置串口控制区元件
                 wxBoxSizer* tain2_2buttons;
@@ -37,17 +40,23 @@ class serialGUIFrame: public wxFrame
         wxTextCtrl *Recieve_txtbox;         // 存放接收到的数据
         wxTextPlus *Send_Message;           // 缓存待发送的数据
         wxButton   *Open_serial_port, *Clear_recieve;             // 【打开串口】和【清空接收】
-        wxCheckBox *is_Recieve_data, *send_hex;
+        wxCheckBox *is_Recieve_data, *send_hex, *loop_send;
         wxButton   *Send_data_now;
         //wxButton   *Start_display, *Stop_display, *Init_display;  // 图形控件的指令
         wxStatusBar *Stb;
-        wxTimer    *sampling_clk;
+        wxMenuBar   *menubar;
+        wxMenu      *menu_file;
+        wxTimer    *sampling_clk, *loop_clk;
         wxSpinCtrl *displayWidth;
         GUILineChart *Graph;
         serialGUIConfigBox* configBox;
+        wxSpinCtrl *SendDelay;
         boost::asio::io_service IO_svr;
         boost::asio::serial_port IOdata;
         std::vector<uint8_t> buf;
+
+        std::vector<wxWindow*> ElementsEnabledOnlyIFPort_Open;
+        std::vector<wxWindow*> ElementsEnabledOnlyIFPort_Close;
 
         /* counter */
         unsigned int scnt;  // sending counter
@@ -56,14 +65,17 @@ class serialGUIFrame: public wxFrame
         /* flags */
         bool flagRecieve;           // 是否接收串口信号
         bool isSendHex;
+        //bool isLoopSend;
+        bool flagLoopReadyToSend;   // Managed by Timer
+        bool flagSent;              // Managed by handle function
+
         void bind_boxsizer();
-
-
 
     protected:
         void init_elements();
         void modeIdle();
         void modeWorking();
+        void SetLoopFlagBeforeSend();
         /* 串口读写函数 */
         void asioOpen_serial_port(const char* port, int baud, int dbt, int par, int sbits);
         void asioClose_serial_port();
@@ -78,7 +90,15 @@ class serialGUIFrame: public wxFrame
         void evtSending(wxCommandEvent& event);
         void evtFlagRecieve(wxCommandEvent& event);
         void evtSendHex(wxCommandEvent& event);
+        void evtMenuOpenFile(wxCommandEvent& event);
+        //void evtLoopSend(wxCommandEvent& event);
+        void evtLoopClk(wxTimerEvent& event);
         void update_display_range();
+
+        /* 事件无关方法 */
+        void LoadDataFromFile();
+        void SendDataNow();
+
     protected: // Assistant functions
         void update_rs_bytes();
         std::vector<wxString> enum_ports();
@@ -97,7 +117,10 @@ class serialGUIFrame: public wxFrame
             idSendData,
             idStartShowOn_Graphic,
             idStopShowOn_Graphic,
-            idSendHex
+            idSendHex,
+            menuOpenFile,
+            idLoopSend,
+            idLoopClk
         };
         void OnClose(wxCloseEvent& event);
         void OnQuit(wxCommandEvent& event);

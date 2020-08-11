@@ -6,7 +6,7 @@
 #include <mathplot.h>
 #include "../Serial_data.h"
 
-class GUILineChart: public Serial_data, private wxPanel
+class GUILineChart: public Serial_data, public wxPanel
 {
     public:
         GUILineChart(wxWindow* parent);

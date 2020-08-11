@@ -59,7 +59,14 @@ void serialGUIFrame::handle_write(const boost::system::error_code &e, std::size_
 {
     // looks like if update the scnt here, there is a delay in data update
     // so when sending, I update the scnt at once if IOdata.run() executed sucessfully
+    /// situation1(mostly): sending task already finished before Timer triggered
+    /// situation2: sending task takes too long so that Timer triggered earlier than task finished
     update_rs_bytes();
+    flagSent = true;
+    if( loop_send->GetValue() && flagLoopReadyToSend ){ // 1
+        SetLoopFlagBeforeSend();
+        SendDataNow();
+    }
     return;
 }
 
@@ -97,4 +104,67 @@ bool serialGUIFrame::try_open_port(const wxString& a)
     }
     asioClose_serial_port();
     return true;
+}
+
+void serialGUIFrame::LoadDataFromFile()
+{
+    wxFileDialog selfile(this);
+    if(selfile.ShowModal() == wxID_OK){
+        auto s = selfile.GetPath();
+        //wxMessageBox(s);
+        wxFile fio(s);
+        wxString tmp;
+        fio.ReadAll(&tmp);
+        Send_Message->ChangeValue(tmp);
+    }
+    return;
+}
+
+void serialGUIFrame::SendDataNow()
+{
+    if(IOdata.is_open()) { // make sure the port has been opened before sending
+        if(Send_Message->empty()){
+            wxMessageBox(_("No Data"), _("Note"));
+            return;
+        }
+
+        if(isSendHex){
+            auto cbuf = Send_Message->getHex();
+            if(cbuf.size() > 0){
+                IOdata.async_write_some( boost::asio::buffer( cbuf, cbuf.size() ),
+                    boost::bind(&serialGUIFrame::handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
+                );
+                scnt += cbuf.size();
+            }
+            else{
+                wxMessageBox(_("Syntax Error"), _("Error"), wxICON_ERROR);
+                return;
+            }
+        }
+        else{
+            auto msg = Send_Message->getString();
+            IOdata.async_write_some( boost::asio::buffer( msg, msg.size() ),
+                boost::bind(&serialGUIFrame::handle_write, this, boost::placeholders::_1, boost::placeholders::_2)
+            );
+            scnt += msg.size();
+        }
+        IO_svr.run();
+        update_rs_bytes();
+        if( loop_send->GetValue() ){
+            loop_clk->Start(SendDelay->GetValue());
+        }
+        else{
+            Send_Message->Clear();
+        }
+    }
+    else{
+        wxMessageBox(_("Port is closed"), _("Note"), wxICON_ERROR);
+    }
+}
+
+void serialGUIFrame::SetLoopFlagBeforeSend()
+{
+    flagLoopReadyToSend = false;
+    flagSent = false;
+    loop_clk->Start(SendDelay->GetValue());
 }
