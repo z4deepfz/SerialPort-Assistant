@@ -181,7 +181,6 @@ msgstr "构建信息："
 #: serialGUIMain.cpp:319
 msgid "Copyright 2020 z4deepfz"
 msgstr "©版权所有 2020 z4deepfz"
-
 #~ msgid "Start Drawing"
 #~ msgstr "开始绘图"
 
