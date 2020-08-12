@@ -6,12 +6,15 @@
 #include <mathplot.h>
 #include "../Serial_data.h"
 
-class GUILineChart: public Serial_data, private wxPanel
+class GUILineChart: public Serial_data, public wxPanel
 {
     public:
         GUILineChart(wxWindow* parent);
         ~GUILineChart();
         void addElement(double x);
+        wxBoxSizer* GetCtrlSizer() const;
+        mpWindow* GetmpWindowPtr() const;
+        unsigned int GetDataCount() const;
 
     protected:
         //wxPanel    *top_panel;
@@ -30,13 +33,14 @@ class GUILineChart: public Serial_data, private wxPanel
         void OnCheckBox_Show(wxCommandEvent &event);
         void OnButton_Clean(wxCommandEvent &event);
         void OnSpin_size(wxSpinEvent &event);
+
         enum {
             idButton_Clean,
             idCheckBox_Show,
             idChangeSize
         };
 
-    protected: // Assistant functions
+    public: // Assistant functions
         void update_display_range();
 
     private:

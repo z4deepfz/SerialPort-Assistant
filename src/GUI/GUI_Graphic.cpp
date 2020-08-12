@@ -75,6 +75,10 @@ void GUILineChart::OnSpin_size(wxSpinEvent &event)
     update_display_range();
 }
 
+mpWindow* GUILineChart::GetmpWindowPtr() const { return mpGraph; }
+wxBoxSizer* GUILineChart::GetCtrlSizer() const { return sizerCtrl; }
+unsigned int GUILineChart::GetDataCount() const { return data.size(); }
+
 GUILineChart::~GUILineChart()
 {
     mpGraph->DelLayer((Serial_data*)this);

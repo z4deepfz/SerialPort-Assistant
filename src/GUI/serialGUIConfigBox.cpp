@@ -4,23 +4,24 @@ serialGUIConfigBox::serialGUIConfigBox(
     wxWindow* parent,
     const std::vector<wxString>& portCOMs
 ):
-    wxBoxSizer(wxHORIZONTAL), stBox(wxVERTICAL), cBox(wxVERTICAL),
-    bPort( new boxConfig(parent, portCOMs) ),
-    bBaud( new boxConfig(parent, { "9600", "19200", "38400", "57600", "115200" } )),
-    bDBit( new boxConfig(parent, { "5", "6", "7", "8" }) ),
-    bPari( new boxConfig(parent, { "None", "Odd", "Even" }) ),
-    bSBit( new boxConfig(parent, { "1", "1.5", "2"}) ),
-    tPort( new txtConfig(parent, _("Port")) ),
-    tBaud( new txtConfig(parent, _("Baudrate")) ),
-    tDBit( new txtConfig(parent, _("Data Bits")) ),
-    tPari( new txtConfig(parent, _("Parity")) ),
-    tSBit( new txtConfig(parent, _("Stop Bits")) )
+    wxPanel(parent), topBox(wxHORIZONTAL), stBox(wxVERTICAL), cBox(wxVERTICAL),
+    bPort( new boxConfig(this, portCOMs) ),
+    bBaud( new boxConfig(this, { "9600", "19200", "38400", "57600", "115200" } )),
+    bDBit( new boxConfig(this, { "5", "6", "7", "8" }) ),
+    bPari( new boxConfig(this, { "None", "Odd", "Even" }) ),
+    bSBit( new boxConfig(this, { "1", "1.5", "2"}) ),
+    tPort( new txtConfig(this, _("Port")) ),
+    tBaud( new txtConfig(this, _("Baudrate")) ),
+    tDBit( new txtConfig(this, _("Data Bits")) ),
+    tPari( new txtConfig(this, _("Parity")) ),
+    tSBit( new txtConfig(this, _("Stop Bits")) )
 
 {
     constexpr auto defStyle = wxEXPAND | wxALL;
     /* add two boxSizer to top box */
-    wxBoxSizer::Add(&stBox, 1, defStyle, 0);
-    wxBoxSizer::Add(&cBox, 1, defStyle, 0);
+    wxPanel::SetSizer(&topBox);
+    topBox.Add(&stBox, 1, defStyle, 0);
+    topBox.Add(&cBox, 1, defStyle, 0);
     /* add choice boxes */
     cBox.Add(bPort, 1, defStyle, 5);
     cBox.Add(bBaud, 1, defStyle, 5);

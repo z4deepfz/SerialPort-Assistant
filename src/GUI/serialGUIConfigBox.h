@@ -6,7 +6,7 @@
 
 
 
-class serialGUIConfigBox: public wxBoxSizer
+class serialGUIConfigBox: public wxPanel
 {
 
     /* internal data structure */
@@ -40,7 +40,7 @@ class serialGUIConfigBox: public wxBoxSizer
         void Enable();
         void Disable();
     protected:
-        wxBoxSizer stBox, cBox; // [static text] boxSizer, [choice] boxSizer
+        wxBoxSizer topBox, stBox, cBox; // [static text] boxSizer, [choice] boxSizer
         boxConfig *bPort, *bBaud, *bDBit, *bPari, *bSBit;
         txtConfig *tPort, *tBaud, *tDBit, *tPari, *tSBit;
     protected:
