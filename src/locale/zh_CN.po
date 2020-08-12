@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2020-07-02 23:40+0800\n"
-"PO-Revision-Date: 2020-07-03 02:39+0800\n"
+"POT-Creation-Date: 2020-08-12 13:40+0800\n"
+"PO-Revision-Date: 2020-08-12 13:42+0800\n"
 "Last-Translator: z4deepfz\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -16,19 +16,19 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: GUI\n"
 
-#: GUI/GUI_Graphic.cpp:10
+#: GUI/GUI_Graphic.cpp:13
 msgid "Show on graph"
 msgstr "在图像上显示"
 
-#: GUI/GUI_Graphic.cpp:11
+#: GUI/GUI_Graphic.cpp:14
 msgid "Clear"
 msgstr "清除"
 
-#: GUI/GUI_Graphic.cpp:14
+#: GUI/GUI_Graphic.cpp:17
 msgid "Cases"
 msgstr "数据点"
 
-#: GUI/GUI_Graphic.cpp:15
+#: GUI/GUI_Graphic.cpp:18
 msgid "Value"
 msgstr "值"
 
@@ -66,61 +66,121 @@ msgstr "已接收: %u 字节"
 msgid "Send: %u bytes"
 msgstr "已发送: %u 字节"
 
-#: serialGUIMain.cpp:90 serialGUIMain.cpp:224
-msgid "Open"
-msgstr "打开串口"
-
-#: serialGUIMain.cpp:91
-msgid "Clear Recieve"
-msgstr "清除接收"
-
-#: serialGUIMain.cpp:92
-msgid "Send"
-msgstr "发送数据"
-
-#: serialGUIMain.cpp:98
-msgid "Recieve Data"
-msgstr "接收数据"
-
-#: serialGUIMain.cpp:99
-msgid "HEX Mode"
-msgstr "HEX模式"
-
-#: serialGUIMain.cpp:141
-msgid "Failed to open port"
-msgstr "打开端口失败"
-
-#: serialGUIMain.cpp:169
+#: serialGUIFunctions.cpp:127
 msgid "No Data"
 msgstr "没有数据"
 
-#: serialGUIMain.cpp:169 serialGUIMain.cpp:197
+#: serialGUIFunctions.cpp:127 serialGUIFunctions.cpp:161
 msgid "Note"
 msgstr "提示"
 
-#: serialGUIMain.cpp:181
+#: serialGUIFunctions.cpp:140
 msgid "Syntax Error"
 msgstr "格式错误"
 
-#: serialGUIMain.cpp:181
+#: serialGUIFunctions.cpp:140
 msgid "Error"
 msgstr "错误"
 
-#: serialGUIMain.cpp:197
+#: serialGUIFunctions.cpp:161
 msgid "Port is closed"
 msgstr "端口关闭"
 
-#: serialGUIMain.cpp:225
+#: serialGUIMain.cpp:141 serialGUIMain.cpp:271
+msgid "Open"
+msgstr "打开串口"
+
+#: serialGUIMain.cpp:142
+msgid "Clear Recieve"
+msgstr "清除接收"
+
+#: serialGUIMain.cpp:143
+msgid "Send"
+msgstr "发送数据"
+
+#: serialGUIMain.cpp:147
+msgid "Recieve Data"
+msgstr "接收数据"
+
+#: serialGUIMain.cpp:149
+msgid "HEX Mode"
+msgstr "HEX模式"
+
+#: serialGUIMain.cpp:150
+msgid "Loop"
+msgstr "循环"
+
+#: serialGUIMain.cpp:167
+msgid "&Open\tCtrl-O"
+msgstr "打开\tCtrl-O"
+
+#: serialGUIMain.cpp:168
+msgid "Save &Data\tCtrl-D"
+msgstr "保存数据\tCtrl-D"
+
+#: serialGUIMain.cpp:169
+msgid "Save &Img\tCtrl-I"
+msgstr "保存图像\tCtrl-I"
+
+#: serialGUIMain.cpp:171
+msgid "&About\tCtrl-H"
+msgstr "关于\tCtrl-H"
+
+#: serialGUIMain.cpp:172
+msgid "&File"
+msgstr "文件"
+
+#: serialGUIMain.cpp:173
+msgid "&Help"
+msgstr "帮助"
+
+#: serialGUIMain.cpp:197
+msgid "Failed to open port"
+msgstr "打开端口失败"
+
+#: serialGUIMain.cpp:240
+msgid "Save Recieved Data"
+msgstr "保存数据"
+
+#: serialGUIMain.cpp:252
+msgid "Save Image File"
+msgstr "保存图像"
+
+#: serialGUIMain.cpp:272
 msgid "Idle"
 msgstr "就绪"
 
-#: serialGUIMain.cpp:236
+#: serialGUIMain.cpp:285
 msgid "Close"
 msgstr "关闭端口"
 
-#: serialGUIMain.cpp:237
+#: serialGUIMain.cpp:286
 msgid "Working"
 msgstr "运行中"
+
+#: serialGUIMain.cpp:314
+msgid "Author: z4deepfz\n"
+msgstr "作者：z4deepfz\n"
+
+#: serialGUIMain.cpp:315
+msgid "Github Page: https://github.com/z4deepfz\n"
+msgstr "Github主页：https://github.com/z4deepfz\n"
+
+#: serialGUIMain.cpp:316
+msgid ""
+"Licence: GPL v3\n"
+"\n"
+msgstr ""
+"开源协议: GPL v3\n"
+"\n"
+
+#: serialGUIMain.cpp:317
+msgid "Build info: "
+msgstr "构建信息："
+
+#: serialGUIMain.cpp:319
+msgid "Copyright 2020 z4deepfz"
+msgstr "©版权所有 2020 z4deepfz"
 
 #~ msgid "Start Drawing"
 #~ msgstr "开始绘图"

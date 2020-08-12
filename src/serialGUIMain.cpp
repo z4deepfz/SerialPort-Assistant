@@ -1,4 +1,4 @@
-﻿#ifdef WX_PRECOMP
+#ifdef WX_PRECOMP
 #include "wx_pch.h"
 #endif
 
@@ -8,20 +8,44 @@
 
 #include "serialGUIMain.h"
 
+enum wxbuildinfoformat {
+    short_f, long_f };
+
+wxString wxbuildinfo(const wxbuildinfoformat format)
+{
+    wxString wxbuild(wxVERSION_STRING);
+
+    if (format == long_f )
+    {
+#if defined(__WXMSW__)
+        wxbuild << _T("-Windows");
+#elif defined(__UNIX__)
+        wxbuild << _T("-Linux");
+#endif
+
+#if wxUSE_UNICODE
+        wxbuild << _T("-Unicode build");
+#else
+        wxbuild << _T("-ANSI build");
+#endif // wxUSE_UNICODE
+    }
+
+    return wxbuild;
+}
+
 BEGIN_EVENT_TABLE(serialGUIFrame, wxFrame)
     EVT_CLOSE (serialGUIFrame::OnClose)
-    EVT_BUTTON(idOpenPort, serialGUIFrame::evtOpenPort)
-    //EVT_BUTTON(idStartShowOn_Graphic, serialGUIFrame::evtStartSampling)
-    //EVT_BUTTON(idStopShowOn_Graphic , serialGUIFrame::evtStopSampling)
-    //EVT_BUTTON(idClearGraph,    serialGUIFrame::evtClearGraph)
+    EVT_BUTTON(idOpenPort,      serialGUIFrame::evtOpenPort)
     EVT_BUTTON(idClearTextCtrl, serialGUIFrame::evtClearText)
     EVT_BUTTON(idSendData,      serialGUIFrame::evtSending)
     EVT_CHECKBOX(idISRecieve,   serialGUIFrame::evtFlagRecieve)
     EVT_CHECKBOX(idSendHex,     serialGUIFrame::evtSendHex)
-    //EVT_CHECKBOX(idLoopSend,    serialGUIFrame::evtLoopSend)
     EVT_TIMER (idTimer,         serialGUIFrame::evtSampling)
     EVT_TIMER(idLoopClk,        serialGUIFrame::evtLoopClk)
     EVT_MENU(menuOpenFile,      serialGUIFrame::evtMenuOpenFile)
+    EVT_MENU(idSaveImg,         serialGUIFrame::evtSaveImage)
+    EVT_MENU(idSaveTxt,         serialGUIFrame::evtSaveData)
+    EVT_MENU(idMenuAbout,       serialGUIFrame::OnAbout)
 END_EVENT_TABLE()
 
 
@@ -36,6 +60,7 @@ serialGUIFrame::serialGUIFrame(wxFrame *frame, const wxString& title)
     modeIdle();
     IO_svr.run(); // 这里要激活一下service，否则第一次执行异步操作会阻塞
     top_panel->Layout();
+    wxImage::AddHandler(new wxPNGHandler()); // handler to save PNG file
     return;
 }
 
@@ -62,7 +87,6 @@ void serialGUIFrame::bind_boxsizer()
         tain2_recieve_send_button = new wxBoxSizer(wxHORIZONTAL);
     tain1_text_graph    = new wxBoxSizer(wxVERTICAL);
         sp2_button_graph = new wxBoxSizer(wxHORIZONTAL);
-            //tain3_buttons_leftof_graph = new wxBoxSizer(wxVERTICAL);
             tain4_btn_and_loop = new wxBoxSizer(wxVERTICAL);
                 tain4_chkbox = new wxBoxSizer(wxVERTICAL);
                     tain5_delay = new wxBoxSizer(wxHORIZONTAL);
@@ -73,10 +97,10 @@ void serialGUIFrame::bind_boxsizer()
         tain2_2buttons -> Add(Open_serial_port, 1, wxALL, 5);          // 打开串口的按钮
         tain2_2buttons -> Add(Clear_recieve, 1, wxALL, 5);             // 清空右侧文本框的内容
         tain1_ctrl -> Add(Send_Message, 8, defStyle, 5);
-        tain1_ctrl -> Add(tain2_recieve_send_button, 1, defStyle, 0); // 控制收发的一个勾选框和按钮
+        tain1_ctrl -> Add(tain2_recieve_send_button, 1, defStyle, 5); // 控制收发的一个勾选框和按钮
             tain2_recieve_send_button -> Add(tain4_chkbox, 1, defStyle, 0);
-                tain4_chkbox->Add(is_Recieve_data, 1, defStyle, 5);
-                tain4_chkbox->Add(send_hex, 1, defStyle, 5);
+                tain4_chkbox->Add(is_Recieve_data, 1, defStyle, 0);
+                tain4_chkbox->Add(send_hex, 1, defStyle, 0);
                 //tain4_chkbox->Add(loop_send, 1, defStyle, 5);
             tain2_recieve_send_button->Add(tain4_btn_and_loop, 1, defStyle, 0);
                 tain4_btn_and_loop->Add(tain5_delay, 1, defStyle, 0);
@@ -85,7 +109,6 @@ void serialGUIFrame::bind_boxsizer()
                     tain5_delay->Add(SendDelay, 1, wxALL|wxALIGN_CENTER, 0);
                     //tain5_delay->Add(text_ms, 0, wxALL|wxSHAPED|wxALIGN_CENTER, 0);
                 tain4_btn_and_loop -> Add(Send_data_now, 1, defStyle, 0);
-
     sp0_ctrl_text_area -> Add(tain1_text_graph, 4, defStyle, 10);  // 右侧元件容器
         tain1_text_graph -> Add(Recieve_txtbox, 1, defStyle, 5);   // 保存接收到的内容
         tain1_text_graph -> Add((wxPanel*)Graph, 1, defStyle, 0);  // 按钮集合
@@ -142,7 +165,12 @@ void serialGUIFrame::init_elements()
     menubar = new wxMenuBar;
         menu_file = new wxMenu;
             menu_file->Append(menuOpenFile, _("&Open\tCtrl-O"));
-        menubar->Append(menu_file, _("&File"));
+            menu_file->Append(idSaveTxt, _("Save &Data\tCtrl-D"));
+            menu_file->Append(idSaveImg, _("Save &Img\tCtrl-I"));
+        menu_help = new wxMenu;
+            menu_help->Append(idMenuAbout, _("&About\tCtrl-H"));
+    menubar->Append(menu_file, _("&File"));
+    menubar->Append(menu_help, _("&Help"));
     SetMenuBar(menubar);
 
     /* Others */
@@ -207,12 +235,33 @@ void serialGUIFrame::evtSendHex(wxCommandEvent& event) { isSendHex=send_hex->Get
 void serialGUIFrame::evtClearText(wxCommandEvent& event)    { Recieve_txtbox->Clear(); }
 void serialGUIFrame::evtMenuOpenFile(wxCommandEvent& event){ LoadDataFromFile(); }
 
+void serialGUIFrame::evtSaveData(wxCommandEvent& event)
+{
+    wxFileDialog f(top_panel, _("Save Recieved Data"), wxEmptyString, wxEmptyString, ".txt", wxFD_SAVE);
+    if( f.ShowModal() == wxID_OK ){
+        wxFile io(f.GetPath(), wxFile::write);
+        io.Write(Recieve_txtbox->GetValue());
+    }
+}
+
+void serialGUIFrame::evtSaveImage(wxCommandEvent& event)
+{
+    /// Following two values could be edited personally
+    constexpr unsigned int ImgWidthMultiply = 64;
+    constexpr unsigned int ImgHeightMultiply = 2;
+    wxFileDialog f(top_panel, _("Save Image File"), wxEmptyString, wxEmptyString, ".png", wxFD_SAVE);
+    if( f.ShowModal() == wxID_OK ){
+        auto sz = Graph->GetmpWindowPtr()->GetSize();
+        sz.x = Graph->GetDataCount() * ImgWidthMultiply;
+        sz.y *= ImgHeightMultiply;
+        Graph->GetmpWindowPtr()->Fit(0, Graph->GetDataCount(), 0, Graph->getMaxValue()+10);
+        Graph->GetmpWindowPtr()->SaveScreenshot(f.GetPath(), wxBITMAP_TYPE_PNG, sz);
+        Graph->update_display_range();
+    }
+}
+
 void serialGUIFrame::modeIdle()
 {
-    //configBox->Enable();
-    //is_Recieve_data->Disable();
-    //send_hex->Disable();
-    //Send_data_now->Disable();
     for(auto i: ElementsEnabledOnlyIFPort_Close){
         i->Enable();
     }
@@ -227,10 +276,6 @@ void serialGUIFrame::modeIdle()
 
 void serialGUIFrame::modeWorking()
 {
-    //configBox->Disable();
-    //is_Recieve_data->Enable();
-    //send_hex->Enable();
-    //Send_data_now->Enable();
     for(auto i: ElementsEnabledOnlyIFPort_Close){
         i->Disable();
     }
@@ -262,6 +307,17 @@ void serialGUIFrame::evtLoopClk(wxTimerEvent& event)
     }
 }
 
+
+void serialGUIFrame::OnAbout(wxCommandEvent& event)
+{
+    const wxString aboutinfo =
+          _("Author: z4deepfz\n")
+        + _("Github Page: https://github.com/z4deepfz\n")
+        + _("Licence: GPL v3\n\n")
+        + _("Build info: ") + wxbuildinfo(long_f);
+
+    wxMessageBox(aboutinfo, _("Copyright 2020 z4deepfz"));
+}
 
 serialGUIFrame::~serialGUIFrame() { }
 void serialGUIFrame::OnClose(wxCloseEvent &event) { Destroy(); }

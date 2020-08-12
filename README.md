@@ -1,10 +1,10 @@
-Serial Port Assistant v0.7a
+Serial Port Assistant v1.0
 ====
 
 ![C/C++ CI](https://github.com/z4deepfz/SerialPort-Assistant/workflows/C/C++%20CI/badge.svg)
 ![licence](https://img.shields.io/github/license/z4deepfz/SerialPort-Assistant)
 ![platform](https://img.shields.io/badge/platform-windows%20|%20linux-lightgrey.svg)
-![version](https://img.shields.io/badge/version-0.5%20alpha-blue.svg)
+![version](https://img.shields.io/badge/version-1.0-blue.svg)
 
 ## Begin
 
@@ -20,30 +20,18 @@ The project is quite **imperfect**, welcome to commit or open issus.
  
 ## TODO
 
-*Following features will be supported in v1.0*
-
- - [x] CMakeLists.txt
- - [x] Switch ASCII and HEX mode for sending
- - [x] Status bar
- - [x] Multiple Language
- - [x] Fix the compile problem under Linux
- - [x] CI
- - [x] Loop sending
- - [x] Send data from file
- - [ ] Recieve data and save to file
+*All the features for v1.0 have been reached.*
  
-*Following features may be added in future versions*
+*Following features may be added in the future version*
  
  - [ ] Provide *python* interface to implement custom script
- - [ ] English notes 
-## Upgrade logs [v0.7-alpha]
+ 
+## Upgrade logs [v1.0]
 
  - i18n is supported via `.po` file. Now anyone can submit a translation.
- - Update layout.
- - Cut off some useless functions.
  - Bug fix.
- 
- Remark: 
+ - Loop is supported.
+ - You can read data from file or save them to text/img file.
 
 ## Compile 
 

@@ -36,16 +36,14 @@ class serialGUIFrame: public wxFrame
                     wxBoxSizer* tain3_text;   // 顺序放置静态文本
                     wxBoxSizer* tain3_choice;   // 顺序放置选项框
                 wxBoxSizer* tain2_recieve_send_button; // 放置发送和接收控件
-        //std::pair<wxStaticText*,wxChoice*> selection[5]; //按照从上到下的顺序分配
         wxTextCtrl *Recieve_txtbox;         // 存放接收到的数据
         wxTextPlus *Send_Message;           // 缓存待发送的数据
-        wxButton   *Open_serial_port, *Clear_recieve;             // 【打开串口】和【清空接收】
+        wxButton   *Open_serial_port, *Clear_recieve;
         wxCheckBox *is_Recieve_data, *send_hex, *loop_send;
         wxButton   *Send_data_now;
-        //wxButton   *Start_display, *Stop_display, *Init_display;  // 图形控件的指令
         wxStatusBar *Stb;
         wxMenuBar   *menubar;
-        wxMenu      *menu_file;
+        wxMenu      *menu_file, *menu_help;
         wxTimer    *sampling_clk, *loop_clk;
         wxSpinCtrl *displayWidth;
         GUILineChart *Graph;
@@ -65,7 +63,6 @@ class serialGUIFrame: public wxFrame
         /* flags */
         bool flagRecieve;           // 是否接收串口信号
         bool isSendHex;
-        //bool isLoopSend;
         bool flagLoopReadyToSend;   // Managed by Timer
         bool flagSent;              // Managed by handle function
 
@@ -84,6 +81,7 @@ class serialGUIFrame: public wxFrame
         void handle_write(const boost::system::error_code &e, std::size_t sz);
 
         /* 事件处理函数 */
+        void OnAbout(wxCommandEvent& event);
         void evtOpenPort(wxCommandEvent& event);
         void evtSampling(wxTimerEvent& event);
         void evtClearText(wxCommandEvent& event);
@@ -91,8 +89,9 @@ class serialGUIFrame: public wxFrame
         void evtFlagRecieve(wxCommandEvent& event);
         void evtSendHex(wxCommandEvent& event);
         void evtMenuOpenFile(wxCommandEvent& event);
-        //void evtLoopSend(wxCommandEvent& event);
         void evtLoopClk(wxTimerEvent& event);
+        void evtSaveData(wxCommandEvent& event);
+        void evtSaveImage(wxCommandEvent& event);
         void update_display_range();
 
         /* 事件无关方法 */
@@ -120,11 +119,12 @@ class serialGUIFrame: public wxFrame
             idSendHex,
             menuOpenFile,
             idLoopSend,
-            idLoopClk
+            idLoopClk,
+            idSaveTxt,
+            idSaveImg
         };
         void OnClose(wxCloseEvent& event);
         void OnQuit(wxCommandEvent& event);
-        void OnAbout(wxCommandEvent& event);
         DECLARE_EVENT_TABLE()
 };
 
