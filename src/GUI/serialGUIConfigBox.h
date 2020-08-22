@@ -17,6 +17,7 @@ class serialGUIConfigBox: public wxPanel
             unsigned databits: 4;   // 5, 6, 7, 8
             unsigned stopbits: 5;   // 10, 15, 20
             unsigned parity: 2;     // none=0, odd=1, even=2
+            portConfig();
         };
 
     protected:

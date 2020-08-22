@@ -114,6 +114,15 @@ void serialGUIConfigBox::Disable()
     bSBit->Disable();
 }
 
+serialGUIConfigBox::portConfig::portConfig()
+{
+    baud = 0;
+    databits = 0;
+    stopbits = 0;
+    parity = 0;
+    strncpy(COM, "", 6);
+}
+
 serialGUIConfigBox::boxConfig::boxConfig(wxWindow* parent, const std::initializer_list<wxString>& s):
     wxChoice(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, s.size(), s.begin())
 { }

@@ -189,12 +189,25 @@ void serialGUIFrame::evtOpenPort(wxCommandEvent& event)
         modeIdle();
     }
     else{
-        auto cfg = configBox->getConfig();
+        decltype(configBox->getConfig()) cfg;
+
+        try{
+            cfg = configBox->getConfig();
+        }
+        catch(...){
+            wxMessageBox(_("Invalid Value"), _("Error"), wxICON_HAND);
+            return;
+        }
+
         try{
             asioOpen_serial_port(cfg.COM, cfg.baud, cfg.databits, cfg.parity, cfg.stopbits);
         }
         catch (std::exception &e){
             wxMessageBox(e.what(), _("Failed to open port"));
+            return;
+        }
+        catch (...) {
+            wxMessageBox(_("Unexpected Error"), _("Error"), wxICON_HAND);
             return;
         }
         sampling_clk->Start(1000);
